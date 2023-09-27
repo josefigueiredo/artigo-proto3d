@@ -2,11 +2,12 @@
 
 \usepackage{sbc-template}
 \usepackage{graphicx,url}
-\usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
-\usepackage[latin1]{inputenc}  
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}		% Codificacao do documento
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\input{personalizacoes}
 
-     
 \sloppy
 
 \title{Instructions for Authors of SBC Conferences\\ Papers and Abstracts}
@@ -33,119 +34,125 @@
 \maketitle
 
 \begin{abstract}
-  This meta-paper describes the style to be used in articles and short papers
-  for SBC conferences. For papers in English, you should add just an abstract
-  while for the papers in Portuguese, we also ask for an abstract in
-  Portuguese (``resumo''). In both cases, abstracts should not have more than
-  10 lines and must be in the first page of the paper.
 \end{abstract}
      
 \begin{resumo} 
-  Este meta-artigo descreve o estilo a ser usado na confecção de artigos e
-  resumos de artigos para publicação nos anais das conferências organizadas
-  pela SBC. É solicitada a escrita de resumo e abstract apenas para os artigos
-  escritos em português. Artigos em inglês deverão apresentar apenas abstract.
-  Nos dois casos, o autor deve tomar cuidado para que o resumo (e o abstract)
-  não ultrapassem 10 linhas cada, sendo que ambos devem estar na primeira
-  página do artigo.
 \end{resumo}
 
 
-\section{General Information}
+\section{Resultados Obtidos}
+O principal resultado obtido é uma aplicação, nomeada de Proto3d, que executa simulações de movimento e colisão de corpos rígidos, em duas ou três dimensões dentro do ambiente configurado pelo usuário. A simulação do movimento é baseada na dinâmica newtoniana e a detecção de colisão é implementada em uma estrutura de dados octree, com algoritmos de previsão (Broad Phase) e identificação (Narrow Phase).
 
-All full papers and posters (short papers) submitted to some SBC conference,
-including any supporting documents, should be written in English or in
-Portuguese. The format paper should be A4 with single column, 3.5 cm for upper
-margin, 2.5 cm for bottom margin and 3.0 cm for lateral margins, without
-headers or footers. The main font must be Times, 12 point nominal size, with 6
-points of space before each paragraph. Page numbers must be suppressed.
+Além disso, o Proto3d foi implementado com o objetivo de ser uma ferramenta acessível às pessoas com deficiência visual. Desta forma, os resultados das simulações são apresentados em uma saída de texto, acessível aos leitores de tela disponíveis no mercado, o que permite ao usuário ler a simulação.
 
-Full papers must respect the page limits defined by the conference.
-Conferences that publish just abstracts ask for \textbf{one}-page texts.
+\subsection {Funcionamento do Proto3d}
+O Proto3d tem como finalidade simular o movimento de um ou mais objetos em um ambiente controlado. Nesse ambiente, pode-se controlar os seguintes parâmetros: Gravidade; Limites físicos do ambiente; Passo de tempo.
 
-\section{First Page} \label{sec:firstpage}
+O objetivo do simulador é representar de forma textual a execução da simulação, bem como permitir o congelamento da mesma, em algum ponto, para análise de algum aspecto que o usuário julgar relevante. Como o Proto3d não possui interface gráfica, foi implementado um pequeno teste, com grandezas conhecidas. O resultado da simulação é registrado em um arquivo de log para análise posterior.
 
-The first page must display the paper title, the name and address of the
-authors, the abstract in English and ``resumo'' in Portuguese (``resumos'' are
-required only for papers written in Portuguese). The title must be centered
-over the whole page, in 16 point boldface font and with 12 points of space
-before itself. Author names must be centered in 12 point font, bold, all of
-them disposed in the same line, separated by commas and with 12 points of
-space after the title. Addresses must be centered in 12 point font, also with
-12 points of space after the authors' names. E-mail addresses should be
-written using font Courier New, 10 point nominal size, with 6 points of space
-before and 6 points of space after.
+No Proto3d, os objetos simulados são chamados de corpos rígidos, que poderão ser estáticos ou dinâmicos. Um corpo dinâmico é um objeto que possui massa, velocidade, orientação, coeficiente de restituição, forma, e outras propriedades que o pesquisador julgar necessárias. Já o corpo estático é um objeto que possui forma, posição e orientação, mas despreza propriedades como massa, restituição e velocidade. Para este estudo, optou-se em restringir o formato dos objetos em esferas e caixas.
 
-The abstract and ``resumo'' (if is the case) must be in 12 point Times font,
-indented 0.8cm on both sides. The word \textbf{Abstract} and \textbf{Resumo},
-should be written in boldface and must precede the text.
-
-\section{CD-ROMs and Printed Proceedings}
-
-In some conferences, the papers are published on CD-ROM while only the
-abstract is published in the printed Proceedings. In this case, authors are
-invited to prepare two final versions of the paper. One, complete, to be
-published on the CD and the other, containing only the first page, with
-abstract and ``resumo'' (for papers in Portuguese).
-
-\section{Sections and Paragraphs}
-
-Section titles must be in boldface, 13pt, flush left. There should be an extra
-12 pt of space before each title. Section numbering is optional. The first
-paragraph of each section should not be indented, while the first lines of
-subsequent paragraphs should be indented by 1.27 cm.
-
-\subsection{Subsections}
-
-The subsection titles must be in boldface, 12pt, flush left.
-
-\section{Figures and Captions}\label{sec:figs}
+O quadro a seguir apresenta a visualização da inicialização deste ambiente. (em nota de rodapé) Algumas linhas do log foram omitidas para adequação ao formato de artigo.
 
 
-Figure and table captions should be centered if less than one line
-(Figure~\ref{fig:exampleFig1}), otherwise justified and indented by 0.8cm on
-both margins, as shown in Figure~\ref{fig:exampleFig2}. The caption font must
-be Helvetica, 10 point, boldface, with 6 points of space before and after each
-caption.
+\begin{lstlisting}[frame=single,caption=Inicialização do ambiente\label{lg:init_world}]
+Tempo atual do mundo em segundos: 0.00
+Último passo de tempo: 0.00
+Gravidade habilitada? True
+Gravidade: 0.00:0.00:-9.81
+Limites do mundo: 0.00:1000000.00,0.00:1000000.00,-10000.00:1000000.00
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.5\textwidth]{fig1.jpg}
-\caption{A typical figure}
-\label{fig:exampleFig1}
-\end{figure}
+Nome: Chão
+position: 500000.00:500000.00:-5000.00
+Mostrando AABB… X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -10000.00:0.00 Forma geométrica: Tipo: 1: Caixa
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.3\textwidth]{fig2.jpg}
-\caption{This figure is an example of a figure caption taking more than one
-  line and justified considering margins mentioned in Section~\ref{sec:figs}.}
-\label{fig:exampleFig2}
-\end{figure}
+Nome: Caixa estática
+position: 35.00:35.00:5.00
+Mostrando AABB… X: 10.00:60.00; Y: 10.00:60.00; Z: 0.00:10.00; Forma geométrica: Tipo: 1: Caixa
 
-In tables, try to avoid the use of colored or shaded backgrounds, and avoid
-thick, doubled, or unnecessary framing lines. When reporting empirical data,
-do not use more decimal digits than warranted by their precision and
-reproducibility. Table caption must be placed before the table (see Table 1)
-and the font used must also be Helvetica, 10 point, boldface, with 6 points of
-space before and after each caption.
+Nome: Esfera dinâmica
+Mass: 5.00; Restitution: 0.25
+Mostrando AABB… X: 7.50:12.50; Y: 7.50:12.50; Z: 47.50:52.50
+Forma geométrica: Tipo: 2: esfera
+Centro: 10.00:10.00:50.00; Raio: 2.50
+\end{lstlisting}
 
-\begin{table}[ht]
-\centering
-\caption{Variables to be considered on the evaluation of interaction
-  techniques}
-\label{tab:exTable1}
-\includegraphics[width=.7\textwidth]{table.jpg}
-\end{table}
 
-\section{Images}
+\subsubsection{Formato da saída de dados}
+O Proto3d registra a saída em um arquivo texto com as seguintes informações:
 
-All images and illustrations should be in black-and-white, or gray tones,
-excepting for the papers that will be electronically available (on CD-ROMs,
-internet, etc.). The image resolution on paper should be about 600 dpi for
-black-and-white images, and 150-300 dpi for grayscale images.  Do not include
-images with excessive resolution, as they may take hours to print, without any
-visible difference in the result. 
+\subsubsubsection{Visão geral do ambiente}
+Apresenta informações gerais do ambiente de simulação, como força da gravidade, quantidade, de objetos presentes, bem como uma descrição detalhada de cada objeto no
+ambiente. 
+
+\subsubsubsection{Rastreio do movimento do objeto}
+Após o início da simulação o Proto3d registra as informações para rastreio de movimento do objeto dinâmico em questão. O rastreio do movimento é feito a cada passo de tempo (configurado na inicialização) com as seguintes informações:
+
+
+\begin{itemize}
+\item T: Informa a quantidade de tempo decorrido desde o início da simulação até este registro do rastreio.
+\item Dir: Informa a direção (ou trajetória) do objeto simulado conforme a seguinte legenda: 
+\begin{itemize}
+\item S: O objeto está se movendo para o sul;
+\item N: o objeto está se movendo para o norte;
+\item O: o objeto está se movendo para o oeste;
+\item L: o objeto está se movendo para o leste;
+\item C: o objeto está se movendo para cima;
+\item B: o objeto está se movendo para baixo;
+\end{itemize}
+
+\item Pos: Informa o lugar onde o objeto está no instante do registro. Todos os objetos são localizados nos eixos X (horizontal), Y (profundidade) e Z (vertical).
+
+\item Vel: Informa a velocidade do objeto no instante do registro. A velocidade do objeto é representada em m/s.
+\end{itemize}
+
+\subsection{Simulação de queda da esfera }
+
+O objetivo desta simulação é analisar a queda livre de uma esfera sobre uma caixa, que está no chão do ambiente. Na inicialização foi adicionado ao ambiente duas caixas estáticas, uma sobre a outra. A primeira caixa representa o chão (piso) da simulação, enquanto que a segunda caixa, com forma de cubo, está estática sobre o piso. As dimensões destes objetos estão descritas na inicialização do ambiente, explicado na seção 4.1 <usar referência>
+
+O teste consiste em posicionar uma esfera verticalmente alinhada com o cubo, mas em uma posição bem alta e deixar esta esfera cair. Com o avanço da simulação, a esfera será atraída em direção ao chão, devido à força da gravidade no ambiente, até que eventualmente colida com o cubo que está sobre o chão. Quando a colisão ocorre, a esfera recebe um impulso com sentido contrário à queda, que faz o objeto quicar algumas vezes. 
+
+Este pedaço da simulação pode ser verificado na saída acessível, pelo trecho de código <referencia> 
+
+\begin{lstlisting}[frame=single,caption=Inicialização do ambiente\label{lg:init_world}]
+T: 0.20s, Dir: b, Pos: 10.00:10.00:49.61, Vel: 1.96m/s
+T: 2.60s, Dir: b, Pos: 10.00:10.00:14.29, Vel: 25.51m/s
+T: 2.80s, Dir: c, Pos: 10.00:10.00:12.50, Vel: 6.87m/s
+T: 3.00s, Dir: c, Pos: 10.00:10.00:13.87, Vel: 6.87m/s
+\end{lstlisting}
+
+Linha 1:  Primeira iteração da simulação. A força da gravidade começa a atrair a esfera para baixo.
+
+Linha 2: Iteração no tempo 2.60s. A esfera caiu 35,32m em relação à primeira iteração, estando agora com velocidade de 25.51m/s.
+
+Linha 3: Iteração no tempo 2.80s. A esfera colidiu com a caixa estática e picou, mudando de direção e agora está subindo a uma velocidade de 6.87m/s. 
+
+Linha 4: Iteração no tempo 3.00s. A esfera ainda está subindo em função da colisão com a caixa.
+
+Quando a esfera para de picar na caixa, uma nova força (32m/s) é aplicada “empurrando” a esfera para a direita até os limites da caixa estática.  No momento em que a esfera “sai de cima da caixa”, a gravidade atrai a esfera em direção ao chão. Deste ponto em diante a esfera está sujeita a duas forças, uma vertical (gravidade) e outra horizontal, uma trajetória descendente na diagonal até chegar ao chão, quando o momento vertical cessa novamente.
+
+Este pedaço da simulação pode ser verificado na saída acessível, pelo trecho de código <referencia> 
+Linha 1:  
+Linha 2: 
+Linha 3: 
+Linha 4: 
+
+Ao tocar o chão, a esfera pica novamente, mas agora está sob influência de uma força lateral, descreve um movimento diagonal. No momento em que a esfera parar de quicar, será mantido o movimento lateral até que esta saia do ambiente da simulação.
+
+/* trecho quando toca o chão (se conseguir pega um log mostrando a esfera picando) */
+
+/* fim do trecho */
+
+\section{ Considerações finais:}
+O Proto3d é uma aplicação desenvolvida com a finalidade de simular o movimento de um ou mais corpos sólidos, detectar e resolver as colisões entre estes corpos e ainda, apresentar a simulação em uma saída acessível a pessoas com deficiência visual.
+
+No simulador, tanto o ambiente como os corpos sólidos, possuem parâmetros configuráveis de forma independente. Os parâmetros do ambiente são:  gravidade, dimensão, <listar todos>  e os parâmetros dos corpos rígidos são: massa, velocidade, orientação, coeficiente de restituição, forma, e outras propriedades <quais outras? listar todas as que o proto3d permite simular>. Destaca-se que neste relato, para fins de simplificação, optou-se em restringir a forma dos objetos em esferas e caixas.
+
+A simulação executada pelo Proto3d atingiu os objetivos estabelecidos. Os resultados de movimento mostrados no registro de saída podem ser validados com cálculos de física newtoniana. As colisões são detectadas e o movimento resultante também têm resultados coerentes com os esperados. 
+
+Como trabalhos futuros podem ser listados: 1) ????, 2) ??????, etc…
+
+
 
 \section{References}
 
