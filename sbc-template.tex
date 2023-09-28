@@ -1,12 +1,7 @@
 \documentclass[12pt]{article}
 
-\usepackage{sbc-template}
-\usepackage{graphicx,url}
-\usepackage[brazil]{babel}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}		% Codificacao do documento
-\usepackage{lmodern}			% Usa a fonte Latin Modern
-\input{personalizacoes}
+\input{pacotesbasicos}
+
 
 \sloppy
 
@@ -37,8 +32,36 @@
 \end{abstract}
      
 \begin{resumo} 
+  Aqui vai o resumo
 \end{resumo}
 
+\section{Introdução}
+Aqui vai a introdução.
+
+\section{Simulação Computacional}
+
+Segundo \cite{duran2018computer} a simulação computacional é uma técnica amplamente utilizada em diversas áreas, como por exemplo no estudo de sistemas complexos que por diversos fatores, não podem ser facilmente reproduzidos.
+
+A simulação permite avaliar diversos cenários de uma pesquisa, apenas alterando suas variáveis de controle, reduzindo assim os custos e os riscos de um experimento físico. Conforme \cite{marschner2018}, essa técnica pode ser aplicada em diversas áreas como biologia, engenharia, física, química, entre outras.
+
+Para construir uma simulação, é necessário uma representação matemática e/ou computacional do comportamento do sistema a ser simulado.
+
+\subsection{Formas Geométricas e Movimento}
+A técnica usada para representar uma forma geométrica computacionalmente dependerá do nível de detalhamento desejado \cite{pharr2016}. É possível fazer esta representação de diversas maneiras, por exemplo: forma vetorial, paramétrica ou de forma poligonal. Neste trabalho, adota-se a representação vetorial, com coordenadas cartesianas tridimensionais.
+
+Para fins de simplificação, este trabalho limita-se a modelar objetos na forma de esferas e caixas. Esferas são modeladas com um ponto (centro da esfera) e um raio, enquanto caixas são modeladas ???? <ROGER: REVISAR ESTA SEÇÃO>  
+
+As formas geométricas simuladas são estáticas, quando estão fixadas em alguma posição no ambiente, ou dinâmicas, quando estão sujeitas a movimentação provocada por alguma força externa. 'Normalmente, este movimento é represetnado pela alteração das coordenadas do objeto dinâmico.
+
+\subsection{Colisão e Detecção de Colisão}
+
+Uma colisão ocorre quando dois ou mais objetos entram em contato, compartilhando algum espaço do ambiente simulado~\cite{ericson2004real}. Segundo~\cite{bourg2013physics}, a colisão envolve cálculos para determinar as consequências/efeitos desse contato.
+
+Segundo~\cite{bourg2013physics} a detecção de colisão é um problema de geometria computacional, que procura determinar \emph{se} e \emph{onde}, dois ou mais objetos colidiram. Pode ser detectada de diversas maneiras, dependendo da natureza dos objetos envolvidos~\cite{foley1996}, por exemplo: 1) se a distância entre os dois objetos está abaixo de uma determinada tolerância; 2) se os objetos estiverem sobrepondo-se em um ou mais pontos.
+
+O processo para detecção de colisão é dividido em fase de previsão e de identificação. A previsão busca objetos que possivelmente estejam colidindo, enquanto a identificação localiza as colisões ocorridas. A separação em duas fases distintas garante um consumo racional do recurso computacional. 
+
+Após detectar uma colisão entre dois objetos, torna-se necessário resolver o evento, atualizando a posição da simulação. Em simulações que não requerem realismo, apenas a correção das posições dos objetos é suficiente. Já em simulações mais avançadas, outros métodos podem ser necessários, como a resolução de colisão por impulso discutida em~\cite{bourg2013physics} e~\cite{baraff1992dynamic}, onde as características físicas dos objetos são considerados para que a reação seja adequada natural.
 
 \section{Resultados Obtidos}
 O principal resultado obtido é uma aplicação, nomeada de Proto3d, que executa simulações de movimento e colisão de corpos rígidos, em duas ou três dimensões dentro do ambiente configurado pelo usuário. A simulação do movimento é baseada na dinâmica newtoniana e a detecção de colisão é implementada em uma estrutura de dados octree, com algoritmos de previsão (Broad Phase) e identificação (Narrow Phase).
@@ -52,8 +75,7 @@ O objetivo do simulador é representar de forma textual a execução da simulaç
 
 No Proto3d, os objetos simulados são chamados de corpos rígidos, que poderão ser estáticos ou dinâmicos. Um corpo dinâmico é um objeto que possui massa, velocidade, orientação, coeficiente de restituição, forma, e outras propriedades que o pesquisador julgar necessárias. Já o corpo estático é um objeto que possui forma, posição e orientação, mas despreza propriedades como massa, restituição e velocidade. Para este estudo, optou-se em restringir o formato dos objetos em esferas e caixas.
 
-O quadro a seguir apresenta a visualização da inicialização deste ambiente. (em nota de rodapé) Algumas linhas do log foram omitidas para adequação ao formato de artigo.
-
+O quadro~\ref{lg:init_world} apresenta a visualização da inicialização deste ambiente. (em nota de rodapé) Algumas linhas do log foram omitidas para adequação ao formato de artigo.
 
 \begin{lstlisting}[frame=single,caption=Inicialização do ambiente\label{lg:init_world}]
 Tempo atual do mundo em segundos: 0.00
@@ -64,28 +86,29 @@ Limites do mundo: 0.00:1000000.00,0.00:1000000.00,-10000.00:1000000.00
 
 Nome: Chão
 position: 500000.00:500000.00:-5000.00
-Mostrando AABB… X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -10000.00:0.00 Forma geométrica: Tipo: 1: Caixa
+AABB -> X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -10000.00:0.00 Forma: Tipo: 1: Caixa
 
 Nome: Caixa estática
 position: 35.00:35.00:5.00
-Mostrando AABB… X: 10.00:60.00; Y: 10.00:60.00; Z: 0.00:10.00; Forma geométrica: Tipo: 1: Caixa
+AABB -> X: 10.00:60.00; Y: 10.00:60.00; Z: 0.00:10.00; Forma: Tipo: 1: Caixa
 
 Nome: Esfera dinâmica
 Mass: 5.00; Restitution: 0.25
-Mostrando AABB… X: 7.50:12.50; Y: 7.50:12.50; Z: 47.50:52.50
-Forma geométrica: Tipo: 2: esfera
+AABB -> X: 7.50:12.50; Y: 7.50:12.50; Z: 47.50:52.50
+Forma: Tipo: 2: esfera
 Centro: 10.00:10.00:50.00; Raio: 2.50
 \end{lstlisting}
+
 
 
 \subsubsection{Formato da saída de dados}
 O Proto3d registra a saída em um arquivo texto com as seguintes informações:
 
-\subsubsubsection{Visão geral do ambiente}
-Apresenta informações gerais do ambiente de simulação, como força da gravidade, quantidade, de objetos presentes, bem como uma descrição detalhada de cada objeto no
-ambiente. 
+Visão geral do ambiente
 
-\subsubsubsection{Rastreio do movimento do objeto}
+Apresenta informações gerais do ambiente de simulação, como força da gravidade, quantidade, de objetos presentes, bem como uma descrição detalhada de cada objeto no ambiente. 
+
+Rastreio do movimento do objeto
 Após o início da simulação o Proto3d registra as informações para rastreio de movimento do objeto dinâmico em questão. O rastreio do movimento é feito a cada passo de tempo (configurado na inicialização) com as seguintes informações:
 
 
@@ -112,9 +135,9 @@ O objetivo desta simulação é analisar a queda livre de uma esfera sobre uma c
 
 O teste consiste em posicionar uma esfera verticalmente alinhada com o cubo, mas em uma posição bem alta e deixar esta esfera cair. Com o avanço da simulação, a esfera será atraída em direção ao chão, devido à força da gravidade no ambiente, até que eventualmente colida com o cubo que está sobre o chão. Quando a colisão ocorre, a esfera recebe um impulso com sentido contrário à queda, que faz o objeto quicar algumas vezes. 
 
-Este pedaço da simulação pode ser verificado na saída acessível, pelo trecho de código <referencia> 
+Este trecho da simulação pode ser verificado na saída acessível, pelo trecho de código apresetnado em~\ref{lg:esferaM1}. 
 
-\begin{lstlisting}[frame=single,caption=Inicialização do ambiente\label{lg:init_world}]
+\begin{lstlisting}[frame=single,caption=Inicialização do ambiente\label{lg:esferaM1}]
 T: 0.20s, Dir: b, Pos: 10.00:10.00:49.61, Vel: 1.96m/s
 T: 2.60s, Dir: b, Pos: 10.00:10.00:14.29, Vel: 25.51m/s
 T: 2.80s, Dir: c, Pos: 10.00:10.00:12.50, Vel: 6.87m/s

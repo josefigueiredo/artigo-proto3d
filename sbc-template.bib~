@@ -1,6 +1,6 @@
 @Book{knuth:84,
   author = 	 {Donald E. Knuth},
-  title = 	 {The Book},
+  title = 	 {The {\TeX} Book},
   publisher = 	 {Addison-Wesley},
   year = 	 {1984},
   edition = 	 {15th}
@@ -10,7 +10,7 @@
   author = 	 {R. Boulic and O. Renault},
   title = 	 {3D Hierarchies for Animation},
   booktitle = 	 {New Trends in Animation and Visualization},
-  publisher =    {John Wiley Sons ltd.},
+  publisher =    {John Wiley {\&} Sons ltd.},
   year = 	 {1991},
   editor = 	 {Nadia Magnenat-Thalmann and Daniel Thalmann}
 }
@@ -27,42 +27,41 @@
 
 % Encoding: UTF-8
 
-@Book{bourg2013physics,
+@book{bourg2013physics,
 	title={Physics for Game Developers: Science, math, and code for realistic effects},
 	author={Bourg, David M and Bywalec, Bryan},
 	year={2013},
 	publisher={" O'Reilly Media, Inc."}
 }
 
-@Book{ericson2004real,
+@book{ericson2004real,
 	title={Real-time collision detection},
 	author={Ericson, Christer},
 	year={2004},
 	publisher={Crc Press}
 }
-
-@Book{duran2018computer,
-  title={Computer simulations in science and engineering: Concepts-Practices-Perspectives},
-	author={Juan Manuel Durán},
+@book{duran2018computer,
+	title={Computer simulations in science and engineering: Concepts-Practices-Perspectives},
+	author={Dur{\'a}n, Juan Manuel},
 	year={2018},
 	publisher={Springer}
 }
 
-@Book{marschner2018,
+@book{marschner2018,
 	title={Fundamentals of computer graphics},
 	author={Marschner, Steve and Shirley, Peter},
 	year={2018},
 	publisher={CRC Press}
 }
 
-@Book{pharr2016,
+@book{pharr2016,
 	title={Physically based rendering: From theory to implementation},
 	author={Pharr, Matt and Jakob, Wenzel and Humphreys, Greg},
 	year={2016},
 	publisher={Morgan Kaufmann}
 }
 
-@Book{foley1996,
+@book{foley1996,
 	title={Computer graphics: principles and practice},
 	author={Foley, James D},
 	volume={12110},
@@ -70,14 +69,14 @@
 	publisher={Addison-Wesley Professional}
 }
 
-@Book{hearn2004,
+@book{hearn2004,
 	title={Computer graphics with OpenGL},
 	author={Hearn, Donald and Baker, M Pauline and Baker, M Pauline},
 	volume={3},
 	year={2004},
 	publisher={Pearson Prentice Hall Upper Saddle River, NJ:}
 }
-@Book{baraff1992dynamic,
+@book{baraff1992dynamic,
 	title={Dynamic simulation of nonpenetrating rigid bodies},
 	author={Baraff, David},
 	year={1992},

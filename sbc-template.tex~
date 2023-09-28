@@ -1,0 +1,702 @@
+\documentclass[12pt]{article}
+
+\input{pacotesbasicos}
+
+
+\sloppy
+
+\title{Instructions for Authors of SBC Conferences\\ Papers and Abstracts}
+
+\author{Luciana P. Nedel\inst{1}, Rafael H. Bordini\inst{2}, Flávio Rech
+  Wagner\inst{1}, Jomi F. Hübner\inst{3} }
+
+
+\address{Instituto de Informática -- Universidade Federal do Rio Grande do Sul
+  (UFRGS)\\
+  Caixa Postal 15.064 -- 91.501-970 -- Porto Alegre -- RS -- Brazil
+\nextinstitute
+  Department of Computer Science -- University of Durham\\
+  Durham, U.K.
+\nextinstitute
+  Departamento de Sistemas e Computação\\
+  Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
+  \email{\{nedel,flavio\}@inf.ufrgs.br, R.Bordini@durham.ac.uk,
+  jomi@inf.furb.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+     
+\begin{resumo} 
+\end{resumo}
+
+\section{Referencial Teórico}
+
+Nesta sessão, é apresentada o estudo teórico sobre os principais tópicos envolvendo a detecção de colisão em ambientes simulados.
+
+\subsection{Simulação Computacional}
+
+Segundo \citeonline{duran2018computer} A simulação computacional é uma técnica amplamente utilizada para o estudo de
+sistemas complexos que por diversos fatores não podem ser facilmente
+reproduzidos devido a custos elevados, ou pelo tempo necessário para que se
+realize os experimentos para a obtenção de resultados precisos.
+
+A simulação permite que um pesquisador avalie diversos cenários diferentes para sua
+pesquisa apenas alterando suas variáveis de controle reduzindo a sim os custos
+e os riscos de um experimento físico. Conforme \citeonline{marschner2018}, essa técnica pode ser aplicada em
+diversas áreas como biologia, engenharia, física, química entre outras.
+
+Para construir uma simulação, torna-se necessária a representação matemática ou
+computacional do comportamento do sistema a ser simulado. Isso inclue mas não
+se limita a variáveis de controle que podem alterar o ambiente simulado, e os
+objetos que serão simulados durante algumas etapas, ou por um período de tempo.
+
+A simulação é uma poderosa ferramenta que contribue na descoberta de novas
+tecnologias, ou no aprimoramento das existentes.
+
+
+\subsection{Representação Computacional de Formas Geométricas}
+Na computação, não existe maneira correta ou incorreta de representar a geometria. A forma usada dependerá do nível de detalhamento desejado \citeonline{pharr2016}. É possível fazer esta representação de diversas maneiras, por exemplo: forma vetorial, paramétrica ou de forma poligonal.
+
+Neste estudo será adotada a representação vetorial, devido a sua simplicidade e fácil compreensão. O trabalho será desenvolvido com 3 geometrias principais, que são: esferas, caixas e poliedros.
+
+Para representação dessas formas geométricas, são utilizados pontos de coordenadas cartesianas, definidos em uma estrutura de vetor tridimensional, conforme demonstrado no Código~\ref{code:vec_1}.
+
+\begin{lstlisting}[frame=single,caption=Exemplo de vetor 3d\label{code:vec_1}]
+	class vector3d{
+		float x;
+		float y;
+		float z;
+		
+		vector3d(float x, float y, float z){
+			this->x=x;
+			this->y=y;
+			this->z=z;
+		}
+	};
+\end{lstlisting}
+
+Onde x representa o eixo que vai da esquerda para a direita;
+y representa o eixo  perpendicular ao eixo x;
+e z é o eixo que indica a profundidade apontando para cima.
+
+
+Lembrando também que os vetores tem diversas operações relacionadas como soma,
+subtração, multiplicação, divisão, comprimento ou módulo, produto escalar,
+produto cruzado e produto triplo escalar que são relevantes para este estudo.
+
+\subsubsection{Esferas}
+
+As esferas são simples de representar computacionalmente \citeonline{pharr2016}, e também são simples de se computar.
+Para representarmos uma esfera, tudo o queprecisamos é de um ponto que representará o centro da esfera, e um raio, que
+indica o quanto a esfera se estende em todas as direções a partir do centro.
+Em \citeonline{ericson2004real} é possível encontrar uma implementação geral de esferas, e em \citeonline{bourg2013physics} é possível perceber na prática como usar uma bounding sphere.
+
+\begin{lstlisting}[frame=single,caption=Representação de esfera\label{code:sphere3d}]
+	class sphere3d{
+		public:
+		vector3d center;
+		float radius;
+		
+		sphere3d(const vector3d& center, float radius){
+			this->center=center;
+			this->radius=radius;
+		}
+	};
+	
+	sphere3d s({0.0f, 0.0f, 0.0f}, 5.0f);
+	
+\end{lstlisting}
+
+Desta forma, temos uma esfera cujo o centro está posicionado exatamente na origem de
+nosso sistema cartesiano, e que se estende por um raio de 5 em todas as
+direções.
+
+\subsubsection{Caixas}
+
+As caixas podem ser representadas de diversas formas. Com elas podemos
+representar formas cuboides facilmente. Ela normalmente é representada por dois
+vetores, onde um indica o canto inferior esquerdo, e o outro o canto superior direito.
+
+Outras formas populares de se representar caixas são:
+Ponto central mais meias larguras que se estenderão do centro até as bordas da caixa.
+Ponto inferior esquerdo, e a extensão de suas arestas no eixo x, y e z.
+
+As três formas fornecem vantagens e desvantagens dependendo do contexto em que forem utilizadas. Em \citeonline{ericson2004real} é possível encontrar uma explicação mais detalhada de como estas representações funcionam.
+
+
+O Código~\ref{code:box3d} apresenta as formas mais comuns para representação de caixas. A classe CaixaMinMax define uma caixa com ponto mínimo e máximo. A classe CaixaMeiaLargura define um objeto com um ponto central e o raio. Já a classe CaixaMedidasCompletas define um objeto com as medidas de lado completas.
+
+\begin{lstlisting}[frame=single,caption=Representação de caixa ponto mínimo e máximo\label{code:box3d}]
+	class CaixaMinMax{
+		vector3d min;
+		vector3d max;
+	};
+	
+	class CaixaMeiaLargura{
+		vector3d center;
+		vector3d radius;
+	};
+	
+	class CaixaMedidasCompletas{
+		vector3d min;
+		vector3d measures;
+	};
+\end{lstlisting}
+
+Todas elas servem para representar a mesma coisa, mas podem ser utilizadas em
+contextos diferentes dependendo o requisito. A classe CaixaMinMax é melhor aplicada para aabbs porque já tem seus limites bem definidos e pode ser usada mais facilmente para sucessivos testes. Porém tem a desvantagem de precisar fazer uma atualização extra quando precisar ser movimentada.
+
+No entanto, a classe CaixaMeiaLargura tem a vantagem de precisar atualizar apenas o ponto
+central, porém, quando necessário, terá as operações para computar seus pontos
+mínimos e máximos. Este tipo de estrutura também é conhecida como esfera de 3
+raios.
+
+Em octrees ela é a representação preferida para a representação de nós
+pois é fácil de representar e de se computar.
+
+Por fim, a classe CaixaMedidasCompletas lembra muito a criação de uma janela na computação gráfica. Ela tem seu
+ponto mínimo, e o comprimento de suas arestas até o ponto máximo.
+
+O Código~\ref{example_box3d} cria três caixas exatamente iguais.
+
+\begin{lstlisting}[frame=single,caption=Código de exemplo de criação de 3 caixas\label{example_box3d}]
+	CaixaMinMax b1({10,10,10}, {20,20,20});
+	CaixaMeiaLargura b2({15,15,15}, {5,5,5});
+	CaixaMedidasCompletas b3({10,10,10}, {10,10,10});
+\end{lstlisting}
+
+Todas as 3 representações terão seus limites entre 10 e 20.
+
+
+\subsubsection{Poliedros}
+
+Os poliedros nada mais são que uma nuvem de pontos que representam uma
+geometria específica. Os poliedros certamente são a maneira mais precisa de
+representar geometria, porém eles apresentam uma dualidade significativa. Segundo~\citeonline{pharr2016}, quanto mais
+detalhado o poliedro, mais caro será para computar colisões, rotações e
+translações.
+
+Existem dois tipos de poliedros. Poliedros convexos e poliedros
+côncavos. Poliedros convexos são poliedros que são coplanares ou que possuem
+suas faces voltadas para fora. Por outro lado, poliedros côncavos possuem
+pelo menos uma de suas faces voltada para o interior.
+Neste trabalho não usaremos poliedros pois eles utilizam algoritmos mais
+sofisticados para operarem sobre nuvens de pontos para detectar colisões.
+Em \citeonline{ericson2004real} é discutido com mais detalhes poliedros e seus algoritmos específicos.
+
+\subsection{Colisão}
+
+Uma colisão é um evento que acontece quando dois ou mais objetos entram em
+contato ocupando assim, o mesmo espaço \citeonline{ericson2004real}.
+Estes objetos podem ser personagens de um jogo, elementos do ambiente, ou até
+mesmo raios disparados em uma direção específica para determinar todos os
+objetos na proximidade. A colisão também envolve cálculos para determinar a
+consequência desse contato como explicado em \citeonline{bourg2013physics}.
+
+\subsubsection{Estruturas para delimitação de volumes}
+
+Em uma simulação computacional existem diversos objetos e o ambiente precisa testar se alguma colisão ocorreu. Este monitoramento constante acaba tendo um alto custo computacional. Para otimizar esse processo, os simuladores utilizam estruturas chamadas delimitadores de volume, que fazem um encapsulamento da geometria em avaliação.
+
+Existem vários tipos de estruturas delimitadoras de volumes, como esferas, retângulos, e cascas convexas. Devido a simplicidade de implementação, neste trabalho optou-se pela estrutura retangular. As estruturas delimitadoras de volume poderão ser implementadas de duas formas básicas, que são: Aligned Axis Bounding Box (AABB) e Oriented Bounding Box (OBB).
+
+A estrutura AABB, que pode ser implementada como apresentado no Código~\ref{code:aabb_1}, é uma caixa retangular alinhada aos três eixos do sistema de coordenadas e não pode sofrer rotações. Caso uma rotação aconteça, o delimitador precisa ser reconstruído, implicando em maior custo computacional. No entanto, segundo \citeonline{ericson2004real}, a verificação de colisão é relativamente mais simples de computar.
+
+\begin{lstlisting}[frame=single,caption=Exemplo de AABB\label{code:aabb_1}]
+	class AABB{
+		public:
+		vector3d min;
+		vector3d max;
+		GeometricShape* shape;
+	};
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single,caption=Exemplo de AABB e Esfera\label{code:aabbSphere}]
+	sphere3d* s=new sphere3d({5, 5, 5}, 5);
+	AABB* aabb=new AABB(s);
+\end{lstlisting}
+
+
+Como apresentado no Código~\ref{code:aabbSphere}, a bounding box desta esfera será 2 vetores encapsulando completamente em um cubo. Seus vetores respectivamente serão: min=0,0,0 max=10,10,10
+
+Já a estrutura OBB não está presa a nenhum eixo, facilitando a rotação dos objetos contidos nela. A estrutura OBB, apresentada no Código~\ref{code:obb_1},  é representada por um ponto central, com meias medidas para os eixos e uma matriz de rotação. Segundo Ericson a estrutura OBBS é computacionalmente custosa e de difícil implementação.
+
+\begin{lstlisting}[frame=single,caption=Código de exemplo de OBB\label{code:obb_1}]
+	class obb{
+		public:
+		vector3d center;
+		vector3d measures;
+		matrix3x3 orientation;
+	};
+\end{lstlisting}
+
+Neste trabalho optou-se pela utilização da estrutura AABB, devido à relativa facilidade de implementação em relação a estrutura OBB
+
+\subsubsection{Detecção de Colisão}
+Segundo \citeonline{bourg2013physics}, a detecção de colisão é um problema de geometria computacional que
+determina se e onde, dois ou mais objetos colidiram.
+Uma colisão pode ser detectada de diversas maneiras dependendo da natureza dos
+objetos envolvidos como esferas e caixas.
+
+Para algumas situações, conforme~\citeonline{foley1996} uma colisão pode ser detectada se a distância entre os dois objetos está abaixo de uma
+determinada tolerância. Em outros casos, os objetos podem estar se sobrepondo em um ou mais pontos.
+
+Após uma colisão ser detectada, diversos dados precisam ser coletados para o processamento e resolução da colisão, que é feito posteriormente. Os dados coletados dependerão da natureza do simulador. Para um simulador de física, por exemplo, pode ser necessário o ponto ou pontos de contato onde os objetos colidiram, bem como a velocidade relativa destes objetos no instante da colisão.
+
+Outros dados relevantes para coleta na detecção de colisão são: o vetor normal, que é um vetor unitário que indica a direção em que a colisão aconteceu; e  a profundidade de sobreposição ou de penetração dos objetos, que estabelece o limite para que os objetos se toquem e não se sobreponham.
+
+\subsection{Fases da Detecção de Colisão}
+A detecção de colisão é dividida em duas áreas principais que são fase ampla e fase estreita.
+
+A fase ampla, segundo \citeonline{ericson2004real}, é responsável por determinar rapidamente pares de objetos que possivelmente estejam colidindo, descartando aqueles objetos que não estão.
+Nesta fase, os delimitadores AABBS das formas geométricas são testados pois possuem algoritmos simplificados e eficientes para esta tarefa.
+Quando uma colisão entre dois AABBS é detectada, a sua geometria contida pode não estar colidindo com a geometria do segundo AABB. Então estes dois objetos são agrupados para uma análise mais detalhada em uma fase posterior.
+
+Já a fase estreita, também segundo \citeonline{ericson2004real},  é responsável pelo trabalho mais detalhado e preciso da detecção de colisão.
+É nesta fase onde os algoritmos e técnicas específicas são aplicadas para determinar se de fato os pares de objetos indicados pela fase anterior estão colidindo.
+Caso estejam colidindo, informações como vetor normal, ponto de contato e profundidade de penetração devem ser calculados para uso posterior.
+O uso do ponto de contato é discutido em \citeonline{baraff1992dynamic}, enquanto a normal e profundidade de penetração são explicados em \citeonline{bourg2013physics}.
+\subsubsection{Algoritmos para Fase Ampla}
+Em um ambiente simulado podem existir muitos objetos, alguns próximos outros distantes. 
+Ao selecionar um objeto qualquer deste conjunto de objetos queremos saber com quais outros objetos existe a chance de colisão. 
+Em uma situação desta natureza, a complexidade dos testes normalmente é de O(n² ), onde n é o número de objetos a serem
+testados. Apesar de ser um problema polinomial, esta complexidade ainda é muito dispendiosa, porque os objetos mais distantes espacialmente não precisariam ser testados.
+
+Para acelerar este processo, segundo \citeonline{ericson2004real}, existem diversas estruturas de dados e técnicas de compartimentação espacial. 
+A lógica destas técnicas é agrupar os objetos que estão próximos uns dos outros e interromper a busca quando o restante dos objetos estão fora de alcance.
+
+Algumas das estruturas mais populares atualmente são as árvores octrees, grades uniformes e a divisão espacial por hash.
+
+\subsubsubsection{Octrees}
+
+Uma octree é uma estrutura de dados hierárquica que organiza um espaço
+tridimensional em células menores recursivamente.
+Dado um nó raiz, este nó é dividido em 8  filhos, que também podem ser
+subdivididos em mais 8 filhos até que um critério de parada seja satisfeito.
+Este critério pode ser uma profundidade máxima para a árvore, ou o tamanho do
+nó que será dividido atingiu um limite mínimo.
+
+Os objetos indexados pela estrutura serão adicionados no menor nó que seja capaz de conter todo o volume do objeto.
+Com esta compartimentação espacial, os objetos só precisam verificar a possibilidade de colisão com seus irmãos, e com os nós mais profundos acelerando assim o processo. A Figura~\ref{fig:figura1} mostra a representação de uma árvore octree e seus filhos.
+\begin{figure}[htb]
+	\centering
+	\caption{\label{fig:figura1} Figura mostrando a representação de uma octree}
+	\includegraphics[scale=0.5]{Imagens/Figura_7.10.png} %width=\textwidth
+	\legend{Fonte: \cite{ericson2004real}. }
+\end{figure}
+
+\begin{framed}
+	\footnotesize
+	\noindent Descrição da Imagem: A Figura~\ref{fig:figura1} representa um cubo, tridimensional, em perspectiva (de forma que vemos três faces e um canto). Este cubo (que representa um nó na estrutura octree) é dividido em 8 subcubos - com $1/8$ vezes o tamanho do cubo maior. Em outras palavras, o cubo é dividido na metade nos eixos x,y e z.
+	
+	\noindent Na imagem vemos 7 subcubos numerados de 0 até 8. Na parte inferior estão os cubos 0 (que não é visível por estar escondido atrás dos outros nessa perspectiva); Da direita para esquerda estão os cubos 1,5 e 4. Na parte superior estão os cubos 3,7,6 e 2. O cubo 2 está sobre o cubo 0; o cubo 3 está sobre o cubo 1; o cubo 7 está sobre o cubo 7 e, por fim, o cubo 6 está sobre o cubo 4.
+\end{framed}
+
+A Figura~\ref{fig:figura2} mostra uma árvore quadtree, que é a versão bidimensional de uma árvore octree. Nesta figura é ilustrado como os objetos adicionados ficam indexados nos nós.
+
+\begin{figure}[htb]
+	\centering
+	\caption{\label{fig:figura2} Figura ilustrando uma árvore octree acomodando objetos}
+	\includegraphics[scale=0.5]{Imagens/Figura_7.11.png} %width=\textwidth
+	\legend{Fonte: \cite{ericson2004real}. }
+\end{figure}
+
+\begin{framed}
+	\footnotesize
+	
+	\noindent Descrição da Imagem: A Figura~\ref{fig:figura2}: mostra um quadrado subdividido em quadrados menores, com 15 bolinhas distribuídas aleatoriamente, que representam objetos da simulação. Nenhuma bolinha toca outra, portanto não existe colisão entre os objetos da simulação. O quadrado maior (1º nível na quadtree) é então dividido ao meio (verticalmente e horizontalmente), formando 4 subquadrados menores (2º nível na quadtree). Na imagem, esta divisão é representada por linhas pontilhadas. A seguir, uma nova divisão ocorre e cada subquadrado é dividido novamente (verticalmente e horizontalmente) em 4 novos subquadrados (3º nível na quadtree). Na imagem, esta divisão é representada por linhas tracejadas. 
+	
+	\noindent Ao final das divisões, cada quadrado foi dividido em 4 subquadrados. As bolinhas dentro do quadrado inicial são agora classificados em função de sua posição estão nestas divisões dos quadrados. Se alguma bolinha foi “cortada” por uma das linhas divisórias, então pertencem ao nível superior, caso contrário pertencem ao nível inferior.
+	
+	\noindent A primeira divisão (linha pontilhada) “corta” 3 bolinhas (cor cinza escuro). Estas bolinhas pertencem ao quadrado maior (1º nível); As linhas tracejadas “cortam” 5 bolinhas (cor cinza claro). Estas bolinhas pertencem aos quadrados da primeira divisão (2º nível); As bolinhas que não estão sendo cortadas por nenhuma linha (cor branco), ficaram exatamente dentro dos quadrados menores (3º nível).
+\end{framed}
+
+
+\subsubsubsection{Classificar e Varrer}
+
+Na detecção de colisão, existe uma categoria de algoritmos denominada de
+classificação e varredura. Estes algoritmos tem como objetivo determinar grupos
+de objetos que estão colidindo uns com os outros. Esta categoria de algoritmos é dividida em duas etapas principais:
+
+Classificação: Classifica os objetos seguindo um critério específico. Este
+critério pode ser ordenar os objetos ao longo de um determinado eixo.
+
+Varredura: Varre os objetos classificados detectando interseções entre os os
+objetos que estão na projeção do intervalo especificado.
+
+Segundo \citeonline{ericson2004real} o algoritmo começa ordenando o vetor de entrada por um dos eixos X, Y ou Z., em
+seguida, o vetor é percorrido, e em cada iteração os objetos são testados
+quanto a colisão. Caso o limite inferior do Código~\ref{code:aabb_1} seja maior do
+que o limite superior do AABB testado, o laço interno pode parar com segurança
+pois não existe mais risco de colisão com os próximos objetos. Em seguida, a
+variância dos eixos são calculados, e o eixo com a maior variância é
+selecionado para uma execução futura.
+
+\begin{lstlisting}[frame=single,caption=Exemplo de ordenar e varrer\label{code:SortAndSweep}]
+	void SortAndSweepAABBArray(){
+		qsort(gAABBArray, MAX_OBJECTS, sizeof(AABB *), cmpAABBs);
+		float s[3]={0.0f, 0.0f, 0.0f}, s2[3]={0.0f, 0.0f, 0.0f},v[3];
+		
+		for (int i = 0; i < MAX_OBJECTS; i++){
+			Point p = 0.5f * (gAABBArray[i]->min + gAABBArray[i]->max);
+			for (int c = 0; c < 3; c++){
+				s[c] += p[c];
+				s2[c] += p[c] * p[c];
+			}
+			
+			for (int j = i + 1; j < MAX_OBJECTS; j++){
+				if (gAABBArray[j]->min[gSortAxis] > gAABBArray[i]->max[gSortAxis])
+				break;
+				if (AABBOverlap(gAABBArray[i], gAABBArray[j]))
+				TestCollision(gAABBArray[i], gAABBArray[j]);
+			}
+		}
+		
+		for (int c = 0; c < 3; c++)
+		v[c] = s2[c] - s[c] * s[c] / MAX_OBJECTS;
+		gSortAxis = 0;
+		if (v[1] > v[0])
+		gSortAxis = 1;
+		if (v[2] > v[gSortAxis])
+		gSortAxis = 2;
+	}
+\end{lstlisting}
+
+A Figura~\ref{fig:figura3} ilustra um grupo de objetos antes de passar pela fase ampla, e os objetos após a passagem pela fase ampla.
+\begin{figure}[htb]
+	\centering
+	\caption{\label{fig:figura3} Ilustração de objetos antes e depois de passarem pela fase ampla}
+	\includegraphics[scale=0.4]{Imagens/Figura_2.4.png} %width=\textwidth
+	\legend{Fonte: \citeonline{ericson2004real}. }
+\end{figure}
+
+\begin{framed}
+	\footnotesize
+	\noindent Descrição da Imagem: A Figura~\ref{fig:figura3} apresenta o resultado do processamento na fase ampla. A imagem tem duas partes: a esquerda, que  mostra os objetos antes do processamento da fase ampla; a direita, que mostra os agrupamentos feitos pelo processamento da fase ampla. Antes do processamento, a imagem mostra 11 objetos retangulares dispostos de forma aleatória, mas que podem ser agrupados por proximidade (alguns estão mais próximos do que outros). Pode-se dizer que os objetos poderiam ser separados em 3 grupos verticais, como colunas.
+	
+	\noindent Na primeira coluna há 4 objetos: 3 são maiores e estão em colisão; 1 menor, está sozinho bem no meio. Na segunda coluna, também há 4 objetos: 2 na parte superior, em colisão;  2 objetos separados na parte de baixo da coluna, um mais próximo desta colisão (meio da coluna) e outro mais distante (bem na parte inferior da coluna). Na terceira coluna há 3 objetos: 1 está sozinho (na parte superior), 2 estão em colisão (parte inferior da coluna).
+	
+	\noindent Na parte direita da imagem estão os mesmos blocos, na mesma organização, mas agora agrupados em função do processamento da fase ampla. Os agrupamentos são representados por uma área sombreada em cinza em torno dos objetos. Os 11 objetos foram agrupados em 5 subgrupos menores. Destes, 3 subgrupos possuem objetos que colidem e 2 possuem objetos isolados. A separação ficou da seguinte forma:
+	
+	\noindent A primeira coluna tornou-se um subgrupo completo com os mesmos 4 objetos. A segunda coluna ficou com um subgrupo com os 3 objetos superiores (2 em colisão e 1 bem próximo). O objeto mais distante (bem na parte inferior da coluna) ficou sozinho em um subgrupo. A terceira ficou com 2 subgrupos: O objeto que estava na parte superior ficou em um subgrupo, também sozinho. Já os objetos da parte inferior formaram um subgrupo com os dois objetos de baixo.
+	
+	\noindent Após a fase ampla estes 11 objetos foram separados em 5 subgrupos. Destes 5 subgrupos, 3 possuem objetos que colidem e 2 possuem objetos isolados (sozinhos)
+\end{framed}
+
+\subsubsection{Algoritmos de Fase Estreita}
+
+Após  os testes da fase ampla retornarem pares de objetos que possivelmente
+estejam colidindo, é a vez da fase estreita ser executada.
+
+Nesta fase, os algoritmos mais custosos e complexos computacionalmente são
+executados para determinar com certeza se os objetos estão em colisão.
+Caso estejam, pode-se coletar as informações sobre a colisão como normal, ponto
+de contato e profundidade de penetração para resolver a colisão mais tarde.
+
+\subsubsubsection{Esfera contra Esfera}
+
+Para que duas esferas estejam em colisão, a soma de seus raios deve ser menor
+ou igual a distância de seus centros segundo \citeonline{ericson2004real}.
+A representação da esfera descrita no Código~\ref{code:sphere3d} será utilizada.
+
+\begin{lstlisting}[frame=single,caption=Colisão entre esferas\label{code:collisionSphereSphere}]
+	bool sphereSphere(sphere3d* s1, sphere3d* s2){
+		vector3d v=s1->center-s2->center;
+		float dist=((v.x*v.x)+(v.y*v.y)+(v.z*v.z));
+		float sqRadius=s1->radius+s2->radius;
+		sqRadius=sqRadius*sqRadius;
+		
+		if(dist<=sqRadius){
+			return true;
+		}
+		return false;
+	}
+\end{lstlisting}
+
+Neste exemplo, a soma dos raios foram elevados ao quadrado para realizar o
+teste contra a distância também ao quadrado entre os centros das esferas.
+Esta é uma prática recomendada pois o cálculo de raiz quadrada pode ser muito
+lento para ser realizada como descrito em \citeonline{ericson2004real} e \citeonline{bourg2013physics}.
+
+\subsubsubsection{Caixa contra Caixa}
+
+Para que duas caixas estejam em colisão, precisa existir sobreposição nos três
+eixos testados.
+Neste exemplo, a definição de caixa pela classe CaixaMinMax, do Código~\ref{code:box3d} será preferida.
+
+\begin{lstlisting}[frame=single,caption=Colisão entre caixas\label{code:collisionBoxBox}]
+	bool boxBox(box3d* b1, box3d* b2){
+		if((b1->min.x>b2->max.x)||(b2->min.x>b1->max.x))
+		return false;
+		
+		if((b1->min.y>b2->max.y)||(b2->min.y>b1->max.y))
+		return false;
+		
+		if((b1->min.z>b2->max.z)||(b2->min.z>b1->max.z))
+		return false;
+		return true;
+	}
+\end{lstlisting}
+
+Existem outras variações para este mesmo algoritmo descritos com mais detalhes
+em \citeonline{ericson2004real}.
+
+\subsubsubsection{Esfera contra Caixa}
+
+O teste de esfera e caixa pode ser realizado em duas etapas principais:
+Primeiro: encontrar o ponto mais próximo da caixa em relação a esfera.
+Segundo: Calcular a distância entre o ponto mais próximo e o centro da esfera.
+Caso a distância seja menor que o raio da esfera, então existe uma colisão.
+
+\begin{lstlisting}[frame=single,caption=Colisão entre esfera e caixa\label{code:collisionSphereBox}]
+	bool spherebox(sphere3d *s, box3d *b){
+		vector3d closestPoint;
+		for (int i = 0; i < 3; i++){
+			float v = s->center[i];
+			if (v < b->min[i])
+			v = b->min[i];  
+			if (v > b->max[i])
+			v = b->max[i];
+			closestPoint[i] = v;
+		}
+		
+		float sqdist=((closestPoint - s->center) * (closestPoint - s->center));
+		float sqradius = (s->radius * s->radius);
+		
+		if(sqdist <= sqradius){
+			return true;
+		}
+		return false;
+	}
+\end{lstlisting}
+
+Implementações mais sofisticadas podem ser encontradas em \citeonline{ericson2004real}.
+
+\subsection{Simulação de Corpos Rígidos}
+Segundo \citeonline{bourg2013physics} Um corpo rígido é um conjunto de partículas  que permanecem a distâncias fixas umas das outras  sem nenhum tipo de translação ou rotação entre elas. Em outras palavras,  um corpo rígido não mudará de forma enquanto se move, ou sua deformação é tão insignificante que pode ser desprezada.
+
+Um corpo rígido é  frequentemente representado como tendo uma posição, uma orientação  e  dimensões para representar seu volume. Estes são requisitos mínimos para a  sua definição, porém, dependendo do nível de precisão desejada, pode-se adicionar mais atributos como tensores de inércia, velocidades lineares e angulares, coeficiente de restituição, e o que mais for necessário para que se atinja os objetivos desejados.
+
+Existem 3 classes principais de corpos que podem ser representadas em uma simulação:
+Corpos rígidos, que não se deformam  enquanto se movem, ou caso se deformem, são capazes de voltar a sua forma original;
+
+
+Corpos macios, que podem deformar enquanto se movem ou por ação de forças ou eventos externos;
+
+Ou corpos estáticos, que nada mais é que uma sub-classificação de um corpo rígido ou um corpo macio,  mas com a ausência de massa, ficando a sim, estacionário na posição em que se
+encontra.
+
+\subsubsection{Representação de um Corpo Rígido}
+
+Para fins de exemplos, neste trabalho será adotada representação de corpo rígido do Código~\ref{code:RigidBody}.
+
+\begin{lstlisting}[frame=single,caption=Exemplo de corpo rígido\label{code:RigidBody}]
+	class RigidBody{
+		public:
+		float mass;
+		float restitution;
+		vector3d lastPosition;
+		vector3d position;
+		vector3d velocity;
+		vector3d forces;
+		AABB* aabb;
+	};
+\end{lstlisting}
+
+\subsubsection{Movimentação}
+
+Se o objetivo for determinar  se os objetos colidem, os testes demonstrados são
+suficientes. No entanto, se o objetivo for resolver a colisão informações adicionais devem
+ser coletadas durante o processo de detecção de colisão. O processo de coleta
+de informações é um problema difícil segundo \citeonline{ericson2004real}.
+Quais informações coletar depende muito dos objetivos do sistema.
+
+Porém, três informações são fundamentais:
+Ponto de contato: Retorna um ou mais pontos de contato indicando onde os objetos colidiram.
+Normal da colisão: Este é um vetor unitário apontando a direção em que os objetos devem ser movidos para que eles parem de colidir.
+Profundidade de penetração: É o quanto os objetos estão se sobrepondo. Esta
+informação é utilizada juntamente com a normal de colisão para calcular o vetor
+de translação mínima (VTM) ou (MTV) em inglês, necessário para separar os dois
+objetos.
+
+Cuidados Adicionais devem ser tomados ao se determinar a normal da colisão como
+por exemplo, se uma esfera colidir contra uma caixa, e seu centro estiver
+dentro da caixa, o vetor normal será um vetor nulo, o que poderá resultar em
+comportamentos indesejados na hora de resolver a colisão.
+
+\subsubsection{Simulação da Física}
+
+Após detectar uma colisão entre dois objetos torna-se necessário resolver
+a mesma. Em simulações que não requerem um realismo muito grande, apenas a
+correção das posições dos objetos torna-se necessária.
+
+Em simulações mais avançadas, como simulações de física, outros métodos podem
+ser utilizados como a resolução de colisão por impulso discutida em \citeonline{bourg2013physics} e \citeonline{baraff1992dynamic}.
+Neste método, características físicas dos objetos são levados em consideração
+para que os objetos reajam de forma adequada e mais natural.
+
+Outro cuidado deve-se ser levado em conta nesta etapa.
+Os objetos em colisão podem ser um objeto estático e um objeto dinâmico, ou
+dois objetos dinâmicos. A colisão não deve ser resolvida caso os dois objetos
+em colisão sejam estáticos.
+Caso um dos objetos seja dinâmico e o outro estático, a resolução da colisão
+deve atuar apenas no objeto dinâmico.
+Caso os dois objetos sejam dinâmicos, a resolução deve atuar sobre os dois
+objetos em direções opostas. O Código~\ref{code:solveCollision} exemplifica este processo.
+
+\begin{lstlisting}[frame=single,caption=Exemplo de resolução de colisão\label{code:solveCollision}]
+	void solveCollision(object* b1, object* b2, vector3d contactPoint, vector3d normal, vector3d depth){
+		
+		if(b1->mass<=0.0f){
+			float dir=dotProduct(r2->velocity, normal);
+			if(dir>0) return;
+			if(depth>0){
+				vector3d mtv=normal*depth;
+				b2->Translate(mtv);
+			}
+			
+			float j=-(b2->velocity*normal) * (b2->restitution+1)*b2->mass;
+			vector3d impulse=(j*info.normal);
+			r1->velocity+=(1 / r1->mass) * impulse;
+		}
+		else{
+		}
+	}
+\end{lstlisting}
+
+Segundo \citeonline{bourg2013physics} este é apenas um exemplo básico e simplificado. Em simulações complexas muitos Outros atributos devem ser levados em consideração como tensores de inércia, velocidade tangencial, velocidade angular e torque.
+
+
+
+\section{Resultados Obtidos}
+O principal resultado obtido é uma aplicação, nomeada de Proto3d, que executa simulações de movimento e colisão de corpos rígidos, em duas ou três dimensões dentro do ambiente configurado pelo usuário. A simulação do movimento é baseada na dinâmica newtoniana e a detecção de colisão é implementada em uma estrutura de dados octree, com algoritmos de previsão (Broad Phase) e identificação (Narrow Phase).
+
+Além disso, o Proto3d foi implementado com o objetivo de ser uma ferramenta acessível às pessoas com deficiência visual. Desta forma, os resultados das simulações são apresentados em uma saída de texto, acessível aos leitores de tela disponíveis no mercado, o que permite ao usuário ler a simulação.
+
+\subsection {Funcionamento do Proto3d}
+O Proto3d tem como finalidade simular o movimento de um ou mais objetos em um ambiente controlado. Nesse ambiente, pode-se controlar os seguintes parâmetros: Gravidade; Limites físicos do ambiente; Passo de tempo.
+
+O objetivo do simulador é representar de forma textual a execução da simulação, bem como permitir o congelamento da mesma, em algum ponto, para análise de algum aspecto que o usuário julgar relevante. Como o Proto3d não possui interface gráfica, foi implementado um pequeno teste, com grandezas conhecidas. O resultado da simulação é registrado em um arquivo de log para análise posterior.
+
+No Proto3d, os objetos simulados são chamados de corpos rígidos, que poderão ser estáticos ou dinâmicos. Um corpo dinâmico é um objeto que possui massa, velocidade, orientação, coeficiente de restituição, forma, e outras propriedades que o pesquisador julgar necessárias. Já o corpo estático é um objeto que possui forma, posição e orientação, mas despreza propriedades como massa, restituição e velocidade. Para este estudo, optou-se em restringir o formato dos objetos em esferas e caixas.
+
+O quadro a seguir apresenta a visualização da inicialização deste ambiente. (em nota de rodapé) Algumas linhas do log foram omitidas para adequação ao formato de artigo.
+
+
+\begin{lstlisting}[frame=single,caption=Inicialização do ambiente\label{lg:init_world}]
+Tempo atual do mundo em segundos: 0.00
+Último passo de tempo: 0.00
+Gravidade habilitada? True
+Gravidade: 0.00:0.00:-9.81
+Limites do mundo: 0.00:1000000.00,0.00:1000000.00,-10000.00:1000000.00
+
+Nome: Chão
+position: 500000.00:500000.00:-5000.00
+Mostrando AABB… X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -10000.00:0.00 Forma geométrica: Tipo: 1: Caixa
+
+Nome: Caixa estática
+position: 35.00:35.00:5.00
+Mostrando AABB… X: 10.00:60.00; Y: 10.00:60.00; Z: 0.00:10.00; Forma geométrica: Tipo: 1: Caixa
+
+Nome: Esfera dinâmica
+Mass: 5.00; Restitution: 0.25
+Mostrando AABB… X: 7.50:12.50; Y: 7.50:12.50; Z: 47.50:52.50
+Forma geométrica: Tipo: 2: esfera
+Centro: 10.00:10.00:50.00; Raio: 2.50
+\end{lstlisting}
+
+
+\subsubsection{Formato da saída de dados}
+O Proto3d registra a saída em um arquivo texto com as seguintes informações:
+
+\subsubsubsection{Visão geral do ambiente}
+Apresenta informações gerais do ambiente de simulação, como força da gravidade, quantidade, de objetos presentes, bem como uma descrição detalhada de cada objeto no
+ambiente. 
+
+\subsubsubsection{Rastreio do movimento do objeto}
+Após o início da simulação o Proto3d registra as informações para rastreio de movimento do objeto dinâmico em questão. O rastreio do movimento é feito a cada passo de tempo (configurado na inicialização) com as seguintes informações:
+
+
+\begin{itemize}
+\item T: Informa a quantidade de tempo decorrido desde o início da simulação até este registro do rastreio.
+\item Dir: Informa a direção (ou trajetória) do objeto simulado conforme a seguinte legenda: 
+\begin{itemize}
+\item S: O objeto está se movendo para o sul;
+\item N: o objeto está se movendo para o norte;
+\item O: o objeto está se movendo para o oeste;
+\item L: o objeto está se movendo para o leste;
+\item C: o objeto está se movendo para cima;
+\item B: o objeto está se movendo para baixo;
+\end{itemize}
+
+\item Pos: Informa o lugar onde o objeto está no instante do registro. Todos os objetos são localizados nos eixos X (horizontal), Y (profundidade) e Z (vertical).
+
+\item Vel: Informa a velocidade do objeto no instante do registro. A velocidade do objeto é representada em m/s.
+\end{itemize}
+
+\subsection{Simulação de queda da esfera }
+
+O objetivo desta simulação é analisar a queda livre de uma esfera sobre uma caixa, que está no chão do ambiente. Na inicialização foi adicionado ao ambiente duas caixas estáticas, uma sobre a outra. A primeira caixa representa o chão (piso) da simulação, enquanto que a segunda caixa, com forma de cubo, está estática sobre o piso. As dimensões destes objetos estão descritas na inicialização do ambiente, explicado na seção 4.1 <usar referência>
+
+O teste consiste em posicionar uma esfera verticalmente alinhada com o cubo, mas em uma posição bem alta e deixar esta esfera cair. Com o avanço da simulação, a esfera será atraída em direção ao chão, devido à força da gravidade no ambiente, até que eventualmente colida com o cubo que está sobre o chão. Quando a colisão ocorre, a esfera recebe um impulso com sentido contrário à queda, que faz o objeto quicar algumas vezes. 
+
+Este pedaço da simulação pode ser verificado na saída acessível, pelo trecho de código <referencia> 
+
+\begin{lstlisting}[frame=single,caption=Inicialização do ambiente\label{lg:init_world}]
+T: 0.20s, Dir: b, Pos: 10.00:10.00:49.61, Vel: 1.96m/s
+T: 2.60s, Dir: b, Pos: 10.00:10.00:14.29, Vel: 25.51m/s
+T: 2.80s, Dir: c, Pos: 10.00:10.00:12.50, Vel: 6.87m/s
+T: 3.00s, Dir: c, Pos: 10.00:10.00:13.87, Vel: 6.87m/s
+\end{lstlisting}
+
+Linha 1:  Primeira iteração da simulação. A força da gravidade começa a atrair a esfera para baixo.
+
+Linha 2: Iteração no tempo 2.60s. A esfera caiu 35,32m em relação à primeira iteração, estando agora com velocidade de 25.51m/s.
+
+Linha 3: Iteração no tempo 2.80s. A esfera colidiu com a caixa estática e picou, mudando de direção e agora está subindo a uma velocidade de 6.87m/s. 
+
+Linha 4: Iteração no tempo 3.00s. A esfera ainda está subindo em função da colisão com a caixa.
+
+Quando a esfera para de picar na caixa, uma nova força (32m/s) é aplicada “empurrando” a esfera para a direita até os limites da caixa estática.  No momento em que a esfera “sai de cima da caixa”, a gravidade atrai a esfera em direção ao chão. Deste ponto em diante a esfera está sujeita a duas forças, uma vertical (gravidade) e outra horizontal, uma trajetória descendente na diagonal até chegar ao chão, quando o momento vertical cessa novamente.
+
+Este pedaço da simulação pode ser verificado na saída acessível, pelo trecho de código <referencia> 
+Linha 1:  
+Linha 2: 
+Linha 3: 
+Linha 4: 
+
+Ao tocar o chão, a esfera pica novamente, mas agora está sob influência de uma força lateral, descreve um movimento diagonal. No momento em que a esfera parar de quicar, será mantido o movimento lateral até que esta saia do ambiente da simulação.
+
+/* trecho quando toca o chão (se conseguir pega um log mostrando a esfera picando) */
+
+/* fim do trecho */
+
+\section{ Considerações finais:}
+O Proto3d é uma aplicação desenvolvida com a finalidade de simular o movimento de um ou mais corpos sólidos, detectar e resolver as colisões entre estes corpos e ainda, apresentar a simulação em uma saída acessível a pessoas com deficiência visual.
+
+No simulador, tanto o ambiente como os corpos sólidos, possuem parâmetros configuráveis de forma independente. Os parâmetros do ambiente são:  gravidade, dimensão, <listar todos>  e os parâmetros dos corpos rígidos são: massa, velocidade, orientação, coeficiente de restituição, forma, e outras propriedades <quais outras? listar todas as que o proto3d permite simular>. Destaca-se que neste relato, para fins de simplificação, optou-se em restringir a forma dos objetos em esferas e caixas.
+
+A simulação executada pelo Proto3d atingiu os objetivos estabelecidos. Os resultados de movimento mostrados no registro de saída podem ser validados com cálculos de física newtoniana. As colisões são detectadas e o movimento resultante também têm resultados coerentes com os esperados. 
+
+Como trabalhos futuros podem ser listados: 1) ????, 2) ??????, etc…
+
+
+
+\section{References}
+
+Bibliographic references must be unambiguous and uniform.  We recommend giving
+the author names references in brackets, e.g. \cite{knuth:84},
+\cite{boulic:91}, and \cite{smith:99}.
+
+The references must be listed using 12 point font size, with 6 points of space
+before each reference. The first line of each reference should not be
+indented, while the subsequent should be indented by 0.5 cm.
+
+\bibliographystyle{sbc}
+\bibliography{sbc-template}
+
+\end{document}
