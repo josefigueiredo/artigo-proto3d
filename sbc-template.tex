@@ -97,6 +97,7 @@ AABB -> X: 7.50:12.50; Y: 7.50:12.50; Z: 47.50:52.50
 \subsubsection{Formato da saída de dados}
 O Proto3d registra a saída em um arquivo texto com as seguintes informações:
 
+
 Visão geral do ambiente
 
 Apresenta informações gerais do ambiente de simulação, como força da gravidade, quantidade, de objetos presentes, bem como uma descrição detalhada de cada objeto no ambiente. 
@@ -128,7 +129,7 @@ O objetivo desta simulação é analisar a queda livre de uma esfera sobre uma c
 
 O teste consiste em posicionar uma esfera verticalmente alinhada com o cubo, mas em uma posição bem alta e deixar esta esfera cair. Com o avanço da simulação, a esfera será atraída em direção ao chão, devido à força da gravidade no ambiente, até que eventualmente colida com o cubo que está sobre o chão. Quando a colisão ocorre, a esfera recebe um impulso com sentido contrário à queda, que faz o objeto quicar algumas vezes. 
 
-Este trecho da simulação pode ser verificado na saída acessível, pelo trecho de código apresetnado em~\ref{lg:esferaM1}. 
+Este trecho da simulação pode ser verificado na saída acessível, pelo trecho de código apresentado em~\ref{lg:esferaM1}. 
 
 \begin{lstlisting}[frame=single,caption=Inicialização do ambiente\label{lg:esferaM1}]
 T: 0.20s, Dir: b, Pos: 10.00:10.00:49.61, Vel: 1.96m/s
@@ -145,19 +146,53 @@ Linha 3: Iteração no tempo 2.80s. A esfera colidiu com a caixa estática e pic
 
 Linha 4: Iteração no tempo 3.00s. A esfera ainda está subindo em função da colisão com a caixa.
 
-Quando a esfera para de picar na caixa, uma nova força (32m/s) é aplicada “empurrando” a esfera para a direita até os limites da caixa estática.  No momento em que a esfera “sai de cima da caixa”, a gravidade atrai a esfera em direção ao chão. Deste ponto em diante a esfera está sujeita a duas forças, uma vertical (gravidade) e outra horizontal, uma trajetória descendente na diagonal até chegar ao chão, quando o momento vertical cessa novamente.
+Quando a esfera para de quicar na caixa, uma nova força (35m/s) é aplicada “empurrando” a esfera para a direita até os limites da caixa estática.  No momento em que a esfera “sai de cima da caixa”, a gravidade atrai a esfera em direção ao chão. Deste ponto em diante a esfera está sujeita a duas forças, uma vertical (gravidade) e outra horizontal, uma trajetória descendente na diagonal até chegar ao chão, quando o momento vertical cessa novamente.
 
 Este pedaço da simulação pode ser verificado na saída acessível, pelo trecho de código <referencia> 
-Linha 1:  
-Linha 2: 
-Linha 3: 
-Linha 4: 
 
-Ao tocar o chão, a esfera pica novamente, mas agora está sob influência de uma força lateral, descreve um movimento diagonal. No momento em que a esfera parar de quicar, será mantido o movimento lateral até que esta saia do ambiente da simulação.
+Ao tocar o chão, a esfera quica novamente, mas agora está sob influência de uma força lateral, descreve um movimento diagonal. No momento em que a esfera parar de quicar, será mantido o movimento lateral até que esta saia do ambiente da simulação.
 
-/* trecho quando toca o chão (se conseguir pega um log mostrando a esfera picando) */
+\begin{lstlisting}[frame=single,caption=Esfera sobre o cubo menor\label{lg:esfera_m2}]
+T: 4.80S, Dir: l, Pos: 14.20:10.00:12.89, Vel: 14.00M/s
+T: 5.60S, Dir: l, Pos: 39.40:10.00:12.50, Vel: 42.00M/s
+T: 5.80S, Dir: l, Pos: 49.20:10.00:12.50, Vel: 49.00M/s
+T: 6.00S, Dir: l, Pos: 60.40:10.00:12.50, Vel: 56.00M/s
+\end{lstlisting}
 
-/* fim do trecho */
+Linha 1: Iteração no tempo 4.80s. A autura do salto da esfera se tornou pequeno o suficiente para ativar a força horizontal que empurra a esfera para a direita.
+
+Linha 2: Iteração no tempo 5.60s. A esfera se estabilizou verticalmente em cima do cubo e apenas a força horizontal está agindo sobre ela.
+
+Linha 3: Iteração no tempo 5.80s. A esfera continua acelerando  na direção leste em cima do cubo.
+
+Linha 4: Iteração no tempo 6.00s. A esfera continua sua trajetória na direção leste, no entanto, seu centro ultrapassou a borda do cubo menor.
+
+\begin{lstlisting}[frame=single,caption=Esfera se movendo diagonalmente\label{lg:esfera_m3}]
+T: 6.20S, Dir: lb Pos: 73.00:10.00:12.11, Vel: 63.03M/s
+T: 7.40S, Dir: c Pos: 178.00:10.00:2.50, Vel: 105.06M/s
+T: 8.00S, Dir: lb Pos: 249.40:10.00:3.38, Vel: 126.00M/s
+T: 8.40S, Dir: c Pos: 304.00:10.00:2.50, Vel: 140.00M/s
+\end{lstlisting}
+
+Linha 1: Iteração no tempo 6.20s. A esfera começa a ser puxada para baixo novamente já que não está mais apoiada sobre o cubo menor. Agora tem duas forças agindo sobre a esfera.
+
+Linha 2: Iteração no tempo 7.40s. A esfera atingiu o chão pela primeira vez e continua a ser empurrada para leste.
+
+Linha 3: Iteração no tempo 8.00s. A esfera atinge sua autura máxima após atingir o solo e quicar.
+
+Linha 4: Iteração no tempo 8.40s. A esfera atinge o solo pela segunda vez, e continua na sua trajetória leste.
+
+\begin{lstlisting}[frame=single,caption=Esfera sobre o chão e saída do ambiente\label{lg:esferaM4}]
+T: 8.60S, Dir: l, Pos: 333.40:10.00:2.50, Vel: 147.00M/s
+T: 243.20S, Dir: l, Pos: 998791.00:10.00:2.50, Vel: 8358.00M/s
+T: 244.20S, Dir: lb, Pos: 1007170.00:10.00:-1.42, Vel: 8393.00M/s
+T: 500.01S, Dir: lb, Pos: 4300083.50:10.00:-323212.34, Vel: 17527.70M/s
+\end{lstlisting}
+
+Linha 1: Iteração no tempo 8.60s. A esfera se estabiliza no solo e apenas acelera na direção leste até o final do ambiente.
+Linha 2: Iteração no tempo 243.20s. A esfera está em auta velocidade na direção leste e está próxima ao limite leste do ambiente.
+Linha 3: Iteração no tempo 244.20s. A esfera ultrapassa os limites do ambiente e volta a ser puxada para baixo pela força da gravidade e continua em uma trajetória diagonal até o fim da simulação.
+Linha 4: Iteração no tempo 500.01s. Última iteração da simulação, e a esfera se encontra em auta velocidade extremamente longe dos limites do ambiente de simulação.
 
 \section{ Considerações finais:}
 O Proto3d é uma aplicação desenvolvida com a finalidade de simular o movimento de um ou mais corpos sólidos, detectar e resolver as colisões entre estes corpos e ainda, apresentar a simulação em uma saída acessível a pessoas com deficiência visual.

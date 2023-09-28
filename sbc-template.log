@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.26)  28 SEP 2023 08:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.26)  28 SEP 2023 08:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -440,23 +440,27 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-09.
+10.
 
 (c:/texlive/2023/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [3{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [4] (./sbc-temp
-late.bbl [5]) [6]
+) [3{c:/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [4] [5] (./sbc-
+template.bbl [6]) [7]
 (./sbc-template.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-08-29>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 9758 strings out of 474928
- 157329 string characters out of 5763562
- 2037785 words of memory out of 5000000
- 31062 multiletter control sequences out of 15000+600000
+ 9761 strings out of 474928
+ 157370 string characters out of 5763562
+ 2119785 words of memory out of 5000000
+ 31065 multiletter control sequences out of 15000+600000
  619337 words of font info for 131 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  77i,8n,82p,1009b,1215s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -467,10 +471,10 @@ r6.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2
 023/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/texlive/2023/texmf-dist/fon
 ts/type1/public/lm/lmssbx10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/
 lm/lmtt10.pfb>
-Output written on sbc-template.pdf (6 pages, 223099 bytes).
+Output written on sbc-template.pdf (7 pages, 228338 bytes).
 PDF statistics:
- 69 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 74 PDF objects out of 1000 (max. 8388607)
+ 47 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  35841 words of extra memory for PDF output out of 42996 (max. 10000000)
 
