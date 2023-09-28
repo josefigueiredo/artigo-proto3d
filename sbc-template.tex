@@ -78,28 +78,21 @@ No Proto3d, os objetos simulados são chamados de corpos rígidos, que poderão 
 O quadro~\ref{lg:init_world} apresenta a visualização da inicialização deste ambiente. (em nota de rodapé) Algumas linhas do log foram omitidas para adequação ao formato de artigo.
 
 \begin{lstlisting}[frame=single,caption=Inicialização do ambiente\label{lg:init_world}]
-Tempo atual do mundo em segundos: 0.00
-Último passo de tempo: 0.00
-Gravidade habilitada? True
+Tempo atual: 0.00s; Último passo de tempo: 0.00; Gravidade: True
 Gravidade: 0.00:0.00:-9.81
-Limites do mundo: 0.00:1000000.00,0.00:1000000.00,-10000.00:1000000.00
+Limites: 0.00:1000000.00,0.00:1000000.00,-10000.00:1000000.00
 
-Nome: Chão
-position: 500000.00:500000.00:-5000.00
-AABB -> X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -10000.00:0.00 Forma: Tipo: 1: Caixa
+Nome: Chão; Pos: 500000.00:500000.00:-5000.00; Forma Geom: Caixa
+AABB -> X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -10000.00:0.00 
 
-Nome: Caixa estática
-position: 35.00:35.00:5.00
-AABB -> X: 10.00:60.00; Y: 10.00:60.00; Z: 0.00:10.00; Forma: Tipo: 1: Caixa
+Nome: Caixa estática; Pos: 35.00:35.00:5.00; Forma Geom: Caixa
+AABB -> X: 10.00:60.00; Y: 10.00:60.00; Z: 0.00:10.00; 
 
-Nome: Esfera dinâmica
+Nome: Esfera dinâmica; Forma Geo: esfera; 
+Centro: 10.00:10.00:50.00; Raio: 2.50
 Mass: 5.00; Restitution: 0.25
 AABB -> X: 7.50:12.50; Y: 7.50:12.50; Z: 47.50:52.50
-Forma: Tipo: 2: esfera
-Centro: 10.00:10.00:50.00; Raio: 2.50
 \end{lstlisting}
-
-
 
 \subsubsection{Formato da saída de dados}
 O Proto3d registra a saída em um arquivo texto com as seguintes informações:
