@@ -60,6 +60,24 @@ Após detectar uma colisão entre dois objetos, torna-se necessário resolver o 
 -> recursos utilizados
 
 %########
+
+O Proto3d é um programa que permite realizar simulações de corpo rígido.
+Ele possui algumas propriedades configuráveis tais como gravidade, e limites do ambiente.
+No ambiente, objetos são adicionados para se realizar a simulação. Estes objetos são normalmente chamados de corpos rígidos.
+Os corpos rígidos, são compostos com diversas propriedades como restituição, posição, velocidade, orientação, forma, e outras propriedades dependendo do nível de detalhamento que se deseja.
+O simulador, é constituído  por diversos componentes:
+
+\begin{itemize}
+\item Mundo: É o ambiente virtual onde a simulação ocorre. É o coração de todo o mecanismo.
+\item Corpo rígido: representa um objeto no ambiente, seja ele dinãmico ou estático.
+\item Pré-filtragem: No início do quadro, filtra uma lista de objetos preparando-os para a movimentação.
+\item Integração numérica: Resolve as equações do movimento para cada objeto preparado pela pré-filtragem.
+\item Fase ampla: verifica uma lista de pares de objetos cujo seus AABBS se sobreponham, o que pode indicar que o par de objetos pode ou não estar colidindo.
+\item Fase estreita: aplica testes de intercessão entre geometrias específicas para confirmar ou descartar a colisão, que a fase ampla suspeitou.
+\item Resolvedor de colisões: Atua separando  os objetos caso aja sobreposição. Esta etapa trabalha no conjunto de objetos retornado pela fase estreita.
+\item Despache de eventos: Nesta faze, notificações são enviadas para o usuário para informar sobre o que aconteceu no quadro atual.
+\end{itemize}
+
 \section{Resultados Obtidos}
 O principal resultado é a aplicação Proto3d, que executa simulações de movimento e colisão de corpos rígidos em duas ou três dimensões, dentro do ambiente configurado pelo usuário. A simulação do movimento é implementada na dinâmica newtoniana, enquanto a detecção de colisão é implementada em uma estrutura de dados \emph{Octree}, com algoritmos \emph{Broad Phase} \emph{Narrow Phase} para previsão e identificação, respectivamente.
 
