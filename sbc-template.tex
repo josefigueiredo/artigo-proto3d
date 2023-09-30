@@ -25,8 +25,11 @@
 \end{resumo}
 
 \section{Introdução}
+
 O objetivo primordial deste trabalho é desenvolver uma aplicação dedicada ao estudo da simulação de corpos rígidos, que servem para modelar o movimento e a iteração entre diversos objetos. Durante o processo de desenvolvimento dessa aplicação, surgiu a necessidade de considerar como testar os componentes construídos sem depender exclusivamente de recursos visuais.
- Embora a visualização da colisão entre corpos rígidos seja  comumente realizada de maneira visual, este estudo busca criar uma abordagem alternativa, especialmente projetada para atender às necessidades de pessoas com deficiência visual. O método proposto prioriza a rastreabilidade das propriedades críticas do problema em detrimento da representação visual, o que torna os resultados acessíveis e compreensíveis tanto para o público-alvo quanto para outros leitores.
+
+Embora a visualização da colisão entre corpos rígidos seja  comumente realizada de maneira visual, este estudo busca criar uma abordagem alternativa, especialmente projetada para atender às necessidades de pessoas com deficiência visual. O método proposto prioriza a rastreabilidade das propriedades críticas do problema em detrimento da representação visual, o que torna os resultados acessíveis e compreensíveis tanto para o público-alvo quanto para outros leitores.
+
 Neste trabalho são apresentados os principais resultados da construção da aplicação Proto3d, um simulador de movimento e colisão de corpos rígidos, que mostra os resultados em uma saída acessível aos leitores de tela disponíveis no mercado. Além disso o Proto3d é uma ferramenta configurável, que permite adicionar e personalizar o mundo e os objetos para a simulação.
 
 O artigo está organizado nas seguintes seções:
@@ -38,9 +41,6 @@ A seção de Materiais e Métodos oferece uma descrição detalhada dos principa
 Nesta seção, apresentaremos os resultados obtidos até o momento com o Proto3d, além de fornecer um exemplo prático de um cenário de teste, demonstrando como o sistema se comportou e o que foi observado durante as simulações.
 5. Considerações Finais
 Na seção de Considerações Finais, concluiremos o artigo, resumindo os principais achados e destacando possíveis direções futuras para a pesquisa.
-
-
-o que ter na introdução....
 
 \section{Simulação Computacional}
 
@@ -98,7 +98,7 @@ O principal resultado é a aplicação Proto3d, que executa simulações de movi
 
 A simulação do movimento é implementada na dinâmica newtoniana, enquanto a detecção de colisão é implementada em uma estrutura de dados \emph{Octree}, com algoritmos \emph{Broad Phase} \emph{Narrow Phase} para previsão e identificação, respectivamente.
 
-Além disso, o Proto3d é uma ferramenta acessível às pessoas com deficiência visual, desta forma os resultados das simulações são apresentados no Registro de Saída, um log acessível aos leitores de tela disponíveis no mercado.
+Além disso, o Proto3d é uma ferramenta acessível às pessoas com deficiência visual, desta forma os resultados das simulações são apresentados no Registro Acessível, um log compatível com os leitores de tela disponíveis no mercado.
 
 \subsection{Simulador Proto3d}
 O Proto3d é um simulador de movimento e colisão de corpos rígidos. Para executar uma simulação, a ferramenta permite dimensionar e personalizar um ambiente (mundo), bem como inserir e personalizar corpos rígidos estáticos ou dinâmicos. Os seguintes parâmetros são configuráveis:
@@ -108,106 +108,94 @@ O Proto3d é um simulador de movimento e colisão de corpos rígidos. Para execu
 	\item \textbf{Corpos rígidos dinâmicos}: forma, massa, posição, velocidade e coeficiente de restituição\footnote{O coeficiente de restituição é um valor que varia de de 0 a 1 e especifica o quanto de energia cinética é conservada no objeto após uma colisão};
 \end{itemize}
 
-+++ avaliar esta explicação ++++
-A localização e o tamanho corpos rígidos é definida pela posição e espaço que ocupa. Posição indica a coordenada do ponto central do objeto, enquanto que o espaço que ocupa será definido pelo intervalo entre duas coordenadas no referido eixo.
-+++++ até aqui +++++
+O mundo criado na simulação utiliza o \emph{sistema de coordenadas de física}, onde o eixo X representa a largura, o eixo Y representa a profundidade e Z representa a altura. O ponto de origem do mundo (X=0,Y=0,Z=0) é localizado no canto inferior esquerdo. A localização e o tamanho corpos rígidos é definida pela posição e espaço que ocupa. Posição indica a coordenada para o ponto central do objeto, enquanto que o espaço que ocupa (AABB, nos logs) é definido pelo intervalo entre duas coordenadas no referido eixo.
 
-A execução da simulação é apresentada em formato texto no Registro de Saída, sendo que esta versão do Proto3d não dispõe de interface gráfica. Para validação das simulações, foram executados alguns testes com grandezas conhecidas. 
+
+A execução da simulação é apresentada em formato texto no Registro Acessível, sendo que esta versão do Proto3d não dispõe de interface gráfica. Para validação das simulações, foram executados alguns testes com grandezas conhecidas. 
 
 Para este estudo, optou-se em restringir o formato dos objetos em esferas e caixas, apresentando os resultados da simulação para um destes testes.
 
-\subsection{Registro de Saída}
-O Proto3d apresenta os resultados de cada simulação no Registro de Saída, em formato de log de texto e também armazena em um arquivo para análise posterior. O registro é organizado em duas partes principais: \emph{Visão Geral} e \emph{Rastreio do Movimento}.
+\subsection{Registro Acessível}
+O Proto3d apresenta os resultados de cada simulação no Registro Acessível, em formato de log de texto e também armazena em um arquivo para análise posterior. O registro é organizado em duas partes principais: \emph{Visão Geral} e \emph{Rastreio do Movimento}.
 
-\textbf{Visão Geral}: Apresenta as configurações gerais do ambiente simulado, como: gravidade, especificação dos limites do mundo e a lista de objetos simulados. Por convenção, as grandezas na simulação podem ser lidas como: dimensão em metros (m), massa em quilogramas (kg), tempo em segundos (s), velocidade em metros/segundo (m/s) e força de movimento em $metros/segundo^{2}$ ($m/s^{2}$).
+\emph{Visão Geral}: Apresenta as configurações gerais do ambiente simulado, como: gravidade, especificação dos limites do mundo e a lista de objetos simulados. Por convenção, as grandezas na simulação podem ser lidas como: dimensão em metros (m), massa em quilogramas (kg), tempo em segundos (s), velocidade em metros/segundo (m/s) e força de movimento em $metros/segundo^{2}$ ($m/s^{2}$).
 
-\textbf{Rastreio do Movimento}: Apresenta informações das iterações do simulador a cada passo de tempo. Os registros possuem informações conforme a legenda:
+\emph{Rastreio do Movimento}: Apresenta informações das iterações do simulador a cada passo de tempo. Os registros possuem informações conforme a legenda:
 
 \begin{itemize}
 	\item T: Tempo decorrido desde o início da simulação até este registro;
-	\item Dir: Trajetória do objeto dinâmico conforme a legenda: s (direção sul), n (direção norte), o (direção oeste), l (direção leste), c (direção acima/para cima), b (direção abaixo/para baixo); É possível ocorrer combinações entre as trajetórias básicas. 
-	\item Pos: Posição do objeto neste instante (em metros) nos eixos X (horizontal), Y (profundidade) e Z (vertical);
+	\item Dir: Trajetória do objeto dinâmico conforme a legenda: s (direção sul), n (direção norte), o (direção oeste), l (direção leste), c (direção acima/para cima), b (direção abaixo/para baixo). É possível ocorrer combinações entre as trajetórias básicas. 
+	\item Pos: Posição do objeto em um determinado instante (em metros) nos eixos X (horizontal), Y (profundidade) e Z (vertical);
 	\item Vel: Velocidade do objeto neste instante (m/s).
 \end{itemize}
 
 \subsection{Testando uma simulação}
-O funcionamento do Proto3d é demonstrado com a simulação de um objeto dinâmico que, atraído pela gravidade, cai e colide com um objeto estático. Depois da colisão com a caixa, sob efeito de uma nova força horizontal, o objeto dinâmico é movido novamente. As etapas da simulação deste teste estão detalhadas a seguir.  
+O funcionamento do Proto3d é demonstrado com a simulação de um objeto dinâmico que, atraído pela gravidade, cai e colide com um objeto estático. Depois desta colisão, sob efeito de uma nova força horizontal, o objeto dinâmico é movido novamente. As etapas da simulação para o teste são detalhadas a seguir. 
 
-O Quadro~\ref{lg:init_world} mostra o Registro de Saída de inicialização do ambiente, para o teste proposto. Para fins de adequação ao formato de artigo, algumas linhas do Registro de Saída original poderão ser omitidas nos quadros apresentados.
+O Quadro~\ref{lg:init_world} mostra o Registro Acessível\footnote{Para fins de adequação ao formato de artigo, algumas linhas do Registro Acessível original são omitidas nos quadros apresentados} de inicialização do ambiente, para o teste proposto.
 
-O registro inicia mostrando Tempo atual=0.00s e Último passo de tempo=0.00s, indicando que a simulação ainda não começou. A seguir mostra o parâmetro Gravidade=True e Gravidade: 0.00:0.00:-9.81, indicando que a gravidade está ativada, com força $9,81 m/s^{2}$ no eixo Z, não existindo forças nos eixos X e Y. O valor é negativo para que a força "atraia" os objetos para baixo. 
+O registro inicia mostrando Tempo atual=0.00s e Último passo de tempo=0.00s, indicando que a simulação ainda não começou. NA linha 2 são mostrados o parâmetros Gravidade=True e Gravidade: 0.00:0.00:-9.81, indicando que a gravidade está ativada, com força $9,81 m/s^{2}$ apenas no eixo Z (o valor é negativo para que a força "atraia" os objetos para baixo). Por fim, na linha 3 são mostrados os limites do ambiente, sendo os 3 eixos iniciam em 0 (origem) vão até 10000000m.
 
-/* revisar aqui:  inicio VERIFICAR SISTEMA DE COORDENADAS */ 
+O chão do mundo (piso) é definido a seguir. A linha 5 informa que este elemento é um objeto em forma de caixa e seu ponto central encontra-se na posição X=500000, Y=500000, Z=-0.5. Pode-se observar que o ponto em Z está negativo, ou seja, está um pouco abaixo da origem. 
 
-Na terceira linha são mostrados os limites do ambiente, tendo um valor inicial e um final para cada eixo. As dimensões do espaço de simulação são 1000000m nos eixos X(largura) e Y (profundidade). O eixo Z (altura) 100000m. 
+A linha 6 mostra o espaço ocupado pelo chão com X=0.00:1000000 e Y=0.00:1000000, indicando que esta forma geométrica ocupa toda a largura e comprimento do mundo. Já a altura do chão é  definida por Z=-1.00:0.00, indicando que a altura do mesmo é de 1m, mas ocupa o espaço abaixo do mundo.
 
-Nas linhas 5 e 6 estão especificados o chão (piso) do ambiente de simulação, representado por uma caixa. O chão do mundo encontra-se na posição 
-
-
-Importante destacar que este chão não representa o limite inferior do mundo, ou seja, nesta simulação há espaço vazio depois do chão. 
-
-O chão encontra-se 
-
-
-/* revisar aqui:   fim */
-
-\begin{lstlisting}[frame=single,caption=Registro de Saída: Inicialização do ambiente\label{lg:init_world}]
+\begin{lstlisting}[frame=single,caption=Registro Acessível: Inicialização do ambiente\label{lg:init_world}]
 	Tempo atual: 0.00s; Último passo de tempo: 0.00; 
 	Gravidade: True; 	Gravidade: 0.00:0.00:-9.81
-	Limites: 0.00:1000000.00,0.00:1000000.00,-10000.00:1000000.00
-	
-	Nome: Chão; Pos: 500000.00:500000.00:-5000.00; Forma Geom: Caixa
-	AABB -> X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -10000.00:0.00 
-	
-	Nome: Caixa estática; Pos: 35.00:35.00:5.00; Forma Geom: Caixa
+	Limites: 0.00:1000000.00,0.00:1000000.00,00:1000000.00
+
+	Nome: Chão; Forma Geom: Caixa; Pos: 500000.00:500000.00:-0.50
+	AABB -> X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -1.00:0.00
+		
+	Nome: Caixa estática; Forma Geom: Caixa; Pos: 35.00:35.00:5.00
 	AABB -> X: 10.00:60.00; Y: 10.00:60.00; Z: 0.00:10.00; 
 	
-	Nome: Esfera dinâmica; Forma Geo: esfera; 
-	Centro: 10.00:10.00:50.00; Raio: 2.50
-	Masss: 5.00; Restituição: 0.25
+	Nome: Esfera dinâmica; Forma Geo: esfera; Pos: 10.00:10.00:50.00
+	Raio: 2.50; Masss: 5.00; Restituição: 0.25
 	AABB -> X: 7.50:12.50; Y: 7.50:12.50; Z: 47.50:52.50
 \end{lstlisting}
 
-A seguir estão as especificações do objeto estático denominado caixa. Na linha 8 está a localização do ponto central da caixa, na coordenada X=35,Y=35,Z=5. A linha 9 mostra os valores do AABB, que marcam os limites da caixa. X=10:60 indica início no ponto 10 e fim no ponto 60; Y=10:60 indica início no ponto 10 e fim no ponto 60; Z=0:10 que indica início no ponto 0 e fim no ponto 10;
+Nas linhas 8 e 9 encontram-se as especificações de um objeto, denominado caixa estática, de forma cúbica com lado 10m, que está repousada sobre o chão.
 
- nos 3 eixos, sendo que cada eixo é representado por um par de valores, com a posição inicial e a posição final (cantos da caixa). As medidas apresentadas informam o intervalo 10:60 no eixo X. 
+A linha 8 informa que a posição do ponto central deste objeto está na coordenada X=35,Y=35,Z=5. Na linha 9 estão os valores do AABB, que demarcam os limites da caixa, com as seguintes dimensões: X=10.00:60:00, ou seja inicio=10 e fim=60 definindo largura de 50m; Z=10.00:60:00, ou seja inicio=10 e fim=60 definindo profundidade de 50m; Y=0.00:10.00, ou seja inicio=10 e fim=10 definindo altura de 10m.
 
-que no eixo XEm X está no intervalo 10:60, ou seja é está limitado entre os pontos 10m e 60m, conferindo uma largura de 50m. Em Y está no intervalo 10:60, conferindo uma largura de 50m. Já em Z está no intervalo 0:10, conferindo uma altura de 10m.
+Nas linhas 11 a 14 estão as especificações de um objeto dinâmico, denominado esfera dinâmica, de forma esférica, situado a 50m de altura a partir do chão. 
 
-
-Na linha 8 estão as especificações do objeto estático, denominado caixa. Os valores indicam que ponto central da caixa está a 35m da origem no eixo X, 35m da origem no eixo Y e tem altura 5m, a partir da origem no eixo Z. Na linha 9 está especificado o AABB do objeto, indicando os limites do mesmo nos 3 eixos. Em X está no intervalo 10:60, ou seja é está limitado entre os pontos 10m e 60m, conferindo uma largura de 50m. Em Y está no intervalo 10:60, conferindo uma largura de 50m. Já em Z está no intervalo 0:10, conferindo uma altura de 10m.
-
-Nas linhas 11 a 14 estão as especificações do objeto dinâmico, denominado esfera. Os valores indicam que o centro da esfera está a 10m da origem no eixo X, 10m  da origem no eixo Y e 50m da origem no eixo Z. O objeto possui raio=2.5m, massa=5kg e coeficiente de restituição = 0.25
-
-Os atributos da esfera, colocam ela verticalmente alinhada com a caixa, em uma posição bem alta. A simulação consiste em deixar a esfera cair, atraída pela força da gravidade. A queda simulada é de 45m. <revisar esta informação>
-
-
-\emph{explicar o AABB}
+A linha 11 informa que o ponto central da esfera está na Posição=10.00:10.00:50.00, ou seja, está a 10m da origem no eixo X, 10m da origem no eixo Y e 50m da origem no eixo Z. A linha informa que a esfera possui raio=2.5m, massa=5kg e coeficiente de restituição=0.25. Na linha 13 estão os valores do AABB, indicando os limites desta esfera, com as seguintes dimensões: X=7.50:12.50;Y=7.50:12.50;Z=47.50:52.50, indicando que o diâmetro da esfera é 5m em todos os eixos.
 
 \subsubsection{Simulação de queda da esfera}
 
-Com a execução da simulação descrita, a esfera é atraída em direção ao chão, devido à força da gravidade presente no ambiente, até que eventualmente colida com a caixa que está sobre o chão. Quando a colisão ocorre, a esfera recebe um impulso com sentido contrário à queda, que faz o objeto quicar algumas vezes. 
+A simulação consiste em deixar a esfera cair, atraída pela força da gravidade, até colidir com o objeto caixa estática. Entre a borda da esfera e a borda da caixa, a queda simulada é de 37,5m, e segundo a física clássica, com uma força G=$9,81 m/s^{2}$ levaria cerca de $2,76s$ para ocorrer a colisão. No momento em que os objetos colidem, a velocidade estimada da esfera é de $27,12m/s$.
 
-Este trecho da simulação pode ser verificado pela saída acessível, no Registro de Saída~\ref{lg:esferaM1}, que mostra apenas alguns pontos da simulação. O detalhamento dos eventos registrados encontra-se a seguir:
+Com a execução da simulação planejada no Quadro~\ref{lg:init_world}, a esfera é atraída para baixo pela gravidade, até que eventualmente colida com a caixa que está sobre o chão. Quando a colisão ocorre, a esfera recebe um impulso com sentido contrário à queda, que faz o objeto quicar algumas vezes. 
 
-\begin{lstlisting}[frame=single,caption=Queda da esfera. \label{lg:esferaM1}]
+Este trecho da simulação pode ser verificado no Quadro~\ref{lg:esferaM1}, onde as coordenadas apresentadas representam o centro da esfera. Destaca-se que apenas alguns instantes da simulação são mostrados no quadro. O detalhamento dos eventos apresentados no Registro Acessível encontra-se a seguir:
+
+\begin{lstlisting}[frame=single,caption=Registro Acessível: Queda da esfera. \label{lg:esferaM1}]
 	T: 0.20s, Dir: b, 	Pos: 10.00:10.00:49.61, Vel: 1.96m/s
 	T: 2.60s, Dir: b, 	Pos: 10.00:10.00:14.29, Vel: 25.51m/s
 	T: 2.80s, Dir: c, 	Pos: 10.00:10.00:12.50, Vel: 6.87m/s
 	T: 3.00s, Dir: c, 	Pos: 10.00:10.00:13.87, Vel: 6.87m/s
 \end{lstlisting}
 
-<revisar esta lista> 
 \begin{itemize}
-	\item Linha 1: Iteração em 0.2s. A gravidade começa atrair a esfera para baixo;
-	\item Linha 2: Iteração em 2.60s. A esfera desceu 35,32m em relação a posição da primeira iteração, estando agora com velocidade de 25.51m/s;
-	\item Linha 3: Iteração em 2.80s. A esfera colidiu com a caixa, recebendo impulso de força contrária à queda, mudando de direção. Agora está subindo (na posição 12.50m) a uma velocidade de 6.87m/s; 
-	\item Linha 4: Iteração no tempo 3.00s. A esfera ainda está subindo (agora na posição 13.87m) em função da colisão com a caixa. Este movimento permanece até que a gravidade consiga anular o impulso restituído, ou que outra força seja aplicada no objeto.
+	\item Linha 1 - iteração em 0,20s: A gravidade começa atrair a esfera para baixo;
+	\item Linha 2 - iteração em 2,60s: A esfera deslocou-se 35,32m em relação a posição da primeira iteração, estando agora com velocidade de 25,51m/s. A colisão ocorrerá no instante $2,76s$, mas este momento não é registrado pelo log.
+	\item Linha 3 - iteração em 2,80s: A esfera já colidiu com a caixa e recebeu um impulso de força contrária à queda, fazendo-a mudar de direção. Agora a esfera está subindo (na posição 12,50m) a uma velocidade de 6,87m/s. 
+	\item Linha 4 - iteração no tempo 3,00s: A esfera ainda está subindo (agora na posição 13,87m) em função da colisão com a caixa. Este movimento permanece até que a gravidade consiga anular o impulso restituído, ou que outra força seja aplicada no objeto.
 \end{itemize}
 
-No instante 4.40s a esfera está parando de quicar, quando uma força lateral de $35m/s^{2}$ é aplicada, causando um deslocamento lateral para a direita (leste), até chegar ao limite caixa. Este momento da simulação pode ser verificado no Registro de Saída~\ref{lg:esfera_m2}. O detalhamento dos eventos registrados encontra-se a seguir:
+/* para a listagem anterior, acho que precisamos de mais uns instantes de tempo.... para mostrar mais uma quicada da esfera Quem sabe uma sequencia em que dir=b, dir=b,dir=c,dir=c	(ou alguma sequencia que vc julgar adequada)*/ 
 
-\begin{lstlisting}[frame=single,caption=Esfera sobre a caixa. \label{lg:esfera_m2}]
+
+
+/* revisei até aqui em 30-9 */ 
+No instante 4,40s a esfera está parando de quicar, quando uma força lateral de $35m/s^{2}$ é aplicada, causando um deslocamento para leste (direita da origem). A esfera será empurrada até chegar ao limite caixa. Este momento da simulação pode ser verificado no Quadro~\ref{lg:esfera_m2}. O detalhamento dos eventos registrados encontra-se a seguir:
+
+
+
+\begin{lstlisting}[frame=single,caption=Registro Acessível: Esfera sobre a caixa. \label{lg:esfera_m2}]
 	T: 4.40s, Dir: c, 	Pos: 10.00:10.00:12.50, Vel: 1.96m/s
 	T: 4.60s, Dir: lc, 	Pos: 11.40:10.00:12.89, Vel: 7.27m/s
 	T: 4.80s, Dir: l, 	Pos: 14.20:10.00:12.89, Vel: 14.00m/s
@@ -222,7 +210,7 @@ No instante 4.40s a esfera está parando de quicar, quando uma força lateral de
 	\item Linha 4: Iteração em 5.60s. A esfera continua acelerando na direção leste em cima do cubo, agora na posição 39.40m com 42m/s.
 \end{itemize}
 
-A esfera continua sendo "empurrada" para leste, até o momento em que “sai de cima da caixa”, iniciando um movimento diagonal, para leste e abaixo. A força lateral ainda está agindo sobre o objeto. Este trecho da simulação pode ser verificado no Registro de Saída \ref{lg:esfera_m3}, que mostra apenas alguns instantes da simulação. O detalhamento é feito a seguir:
+A esfera continua sendo "empurrada" para leste, até o momento em que “sai de cima da caixa”, iniciando um movimento diagonal, para leste e abaixo. A força lateral ainda está agindo sobre o objeto. Este trecho da simulação pode ser verificado no Registro Acessível~\ref{lg:esfera_m3}, que mostra apenas alguns instantes da simulação. O detalhamento é feito a seguir:
 
 \begin{lstlisting}[frame=single,caption=Esfera se movendo diagonalmente\label{lg:esfera_m3}]
 	T: 6.00s, Dir: l	Pos: 60.40:10.00:12.50, Vel: 56.00m/s
@@ -262,7 +250,7 @@ O Proto3d é uma aplicação desenvolvida com a finalidade de simular o moviment
 
 No simulador, tanto o ambiente como os corpos sólidos, possuem parâmetros configuráveis de forma independente. Os parâmetros do ambiente são:  gravidade e limites. E os parâmetros dos corpos rígidos são: massa, velocidade, orientação, coeficiente de restituição, forma, forças, e outras propriedades Destaca-se que neste relato, para fins de simplificação, optou-se em restringir a forma dos objetos em esferas e caixas.
 
-A simulação executada pelo Proto3d atingiu os objetivos estabelecidos. Os resultados de movimento mostrados no registro de saída podem ser validados com cálculos de física newtoniana. As colisões são detectadas e o movimento resultante também têm resultados coerentes com os esperados. 
+A simulação executada pelo Proto3d atingiu os objetivos estabelecidos. Os resultados de movimento mostrados no Registro Acessível podem ser validados com cálculos de física newtoniana. As colisões são detectadas e o movimento resultante também têm resultados coerentes com os esperados. 
 
 Como trabalhos futuros no desenvolvimento do Proto3d, planeja-se implementar o rastreamento de múltiplos objetos, criar uma interface gráfica para tornar o simulador mais acessível, aprimorar o método de integração usado para calcular os movimentos dos objetos, e considerar outras propriedades físicas, como velocidade angular. Além disso, espera-se adicionar a opção configurável de introduzir arrasto do ar no ambiente de simulação.
 
