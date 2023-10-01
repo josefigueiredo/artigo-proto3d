@@ -5,12 +5,6 @@ Baraff, D. (1992).
 \newblock {\em Dynamic simulation of nonpenetrating rigid bodies}.
 \newblock Cornell University.
 
-\bibitem[Boulic and Renault 1991]{boulic:91}
-Boulic, R. and Renault, O. (1991).
-\newblock 3d hierarchies for animation.
-\newblock In Magnenat-Thalmann, N. and Thalmann, D., editors, {\em New Trends
-  in Animation and Visualization}. John Wiley Sons ltd.
-
 \bibitem[Bourg and Bywalec 2013]{bourg2013physics}
 Bourg, D.~M. and Bywalec, B. (2013).
 \newblock {\em Physics for Game Developers: Science, math, and code for
@@ -33,11 +27,6 @@ Foley, J.~D. (1996).
 \newblock {\em Computer graphics: principles and practice}, volume 12110.
 \newblock Addison-Wesley Professional.
 
-\bibitem[Knuth 1984]{knuth:84}
-Knuth, D.~E. (1984).
-\newblock {\em The Book}.
-\newblock Addison-Wesley, 15th edition.
-
 \bibitem[Marschner and Shirley 2018]{marschner2018}
 Marschner, S. and Shirley, P. (2018).
 \newblock {\em Fundamentals of computer graphics}.
@@ -48,10 +37,10 @@ Pharr, M., Jakob, W., and Humphreys, G. (2016).
 \newblock {\em Physically based rendering: From theory to implementation}.
 \newblock Morgan Kaufmann.
 
-\bibitem[Smith and Jones 1999]{smith:99}
-Smith, A. and Jones, B. (1999).
-\newblock On the complexity of computing.
-\newblock In Smith-Jones, A.~B., editor, {\em Advances in Computer Science},
-  pages 555--566. Publishing Press.
+\bibitem[Thibaut~Tadeo et~al. 2004]{thibaut2004proyecto}
+Thibaut~Tadeo, E. et~al. (2004).
+\newblock Proyecto cube: una introducci{\'o}n a la geometr{\'\i}a
+  tridimensional.
+\newblock {\em Suma}.
 
 \end{thebibliography}
