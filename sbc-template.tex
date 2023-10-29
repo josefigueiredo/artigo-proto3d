@@ -26,7 +26,7 @@ Este trabalho apresenta o Proto3d, um simulador de corpos rígidos e detecção 
 \end{resumo}
 
 \section{Introdução}
-O objetivo do trabalho é desenvolver uma aplicação para simulação de corpos rígidos e detecção de colisão. A proposta está situada na área da simulação computacional, delimitando-se na detecção e resolução de colisões. O estudo se justifica uma vez que a simulação computacional com viés acessível é uma área ainda pouco explorada e, segundo~\cite{ericson2004real}, a detecção de colisão continua sendo um problema fundamental, de muita relevância para a ciência moderna.
+O objetivo do trabalho é desenvolver um simulador de corpos rígidos com detecção de colisão, de interface acessível. O estudo justifica-se já que simuladores desenvolvidos com o viés de acessibilidade, ainda são uma área pouco explorada. Ainda segundo~\cite{ericson2004real}, a detecção de colisão continua sendo um problema fundamental, de relevância para a ciência moderna.
 
 O artigo apresenta os resultados obtidos com o desenvolvimento do Proto3d, que simula movimento e colisão de corpos rígidos. O projeto apresenta a execução das simulações em uma saída projetada para atender às necessidades de pessoas com deficiência visual. O método proposto registra os resultados no formato textual, em substituição à representação gráfica, tornando a saída acessível à todos os usuários.
 
@@ -92,7 +92,8 @@ O Proto3d é um simulador de movimento e colisão de corpos rígidos construído
 	\item \textbf{Corpos rígidos dinâmicos}: forma, massa, posição, velocidade e coeficiente de restituição\footnote{Valor que varia de 0 a 1, especificando o quanto de energia cinética o objeto conserva após uma colisão.};
 \end{itemize}
 %
-Os seguintes padrões foram adotados na implementação do Proto3d: 1) Utiliza o Sistema Cartesiano Tridimensional \cite{thibaut2004proyecto}, onde X, Y e Z representam, respectivamente, largura, profundidade e altura. 2) O ponto de origem do mundo (X=0,Y=0,Z=0) é localizado no canto inferior esquerdo. 3) A localização e o tamanho dos corpos rígidos é definida por posição (coordenada onde está o ponto central do objeto no mundo) e espaço que ocupa (definido pelo \textit{Axis Aligned Bounding Box}, ou AABB). 4) A entrada de dados ocorre por meio de um objeto JSON previamente configurado em um arquivo de texto. Esse arquivo contém chaves e valores destinados a ajustar as propriedades do ambiente, bem como uma lista de objetos a serem adicionados.
+Os seguintes padrões foram adotados na implementação do Proto3d: 1) Utiliza o Sistema Cartesiano Tridimensional \cite{thibaut2004proyecto}, onde X, Y e Z representam, respectivamente, largura, profundidade e altura. 2) O ponto de origem do mundo (X=0,Y=0,Z=0) é localizado no canto inferior esquerdo. 3) A localização e o tamanho dos corpos rígidos é definida por posição (coordenada onde está o ponto central do objeto no mundo) e espaço que ocupa (definido pelo \textit{Axis Aligned Bounding Box}, ou AABB). 4) A entrada de dados ocorre por meio de um arquivo no formato JSON, preparado previamente. O arquivo contém chaves e valores para setup do ambiente e uma lista de objetos a serem adicionados.
+
 
 O AABB pode ser compreendido como uma estrutura que encapsula o objeto simulado, sendo especificado por 3 segmentos de reta, um em cada eixo. Cada segmento tem uma posição inicial e uma final.
 
@@ -114,7 +115,7 @@ O Proto3d apresenta os resultados de cada simulação no Registro Acessível, em
 	\item Vel: Velocidade do objeto neste instante (m/s).
 \end{itemize}
 
-Para fins de testes, atualmente é viável realizar o rastreamento de apenas um objeto dinâmico. Os objetos estáticos não são objeto de rastreamento, uma vez que permanecem insensíveis às forças externas que atuam sobre eles.
+Nesta versão do protótipo é possível realizar o rastreamento de apenas um objeto dinâmico.
 
 \subsection{Testando uma simulação}
 O funcionamento do Proto3d é demonstrado com a simulação de um objeto dinâmico que, atraído pela gravidade, cai e colide com um objeto estático. Depois desta colisão, sob efeito de uma nova força horizontal, o objeto dinâmico é movido novamente. As etapas da simulação para o teste são detalhadas na sequência. 
