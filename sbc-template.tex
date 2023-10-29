@@ -6,13 +6,12 @@
 \sloppy
 %\title{Proto3d: Um estudo de como tornar uma simulação computacional acessível}
 \title{Proto3d: Um simulador computacional acessível com detecção de colisão.}
-
 \author{Róger Matheus Lasch\inst{1}, José Antônio de Figueiredo\inst{1}}
 
-\address{Curso Bacharel em Ciência da Computação -- Instituto Federal Sul-rio-grandense (IFSUL)\\
-	Passo Fundo -- RS -- Brasil
-	\email{rogerlasch@gmail.com, josefigueiredo@ifsul.edu.br}
-}
+\address{Curso Bacharel em Ciência da Computação -- Instituto Federal Sul-rio-grandense (IFSUL)\\	Passo Fundo -- RS -- Brasil
+	\email{rogerlasch@gmail.com, josefigueiredo@ifsul.edu.br}}
+
+
 
 \begin{document} 
 
@@ -27,7 +26,7 @@ Este trabalho apresenta o Proto3d, um simulador de corpos rígidos e detecção 
 \end{resumo}
 
 \section{Introdução}
-O objetivo do trabalho é desenvolver uma aplicação para simulação de corpos rígidos e detecção de colisão. A proposta está situada na área da simulação computacional, delimitando-se na detecção e resolução de colisões. O estudo se justifica uma vez que a simulação computacional é uma área ainda pouco explorada e, segundo~\cite{ericson2004real}, a detecção de colisão continua sendo um problema fundamental, de muita relevância para a ciência moderna.
+O objetivo do trabalho é desenvolver uma aplicação para simulação de corpos rígidos e detecção de colisão. A proposta está situada na área da simulação computacional, delimitando-se na detecção e resolução de colisões. O estudo se justifica uma vez que a simulação computacional com viés acessível é uma área ainda pouco explorada e, segundo~\cite{ericson2004real}, a detecção de colisão continua sendo um problema fundamental, de muita relevância para a ciência moderna.
 
 O artigo apresenta os resultados obtidos com o desenvolvimento do Proto3d, que simula movimento e colisão de corpos rígidos. O projeto apresenta a execução das simulações em uma saída projetada para atender às necessidades de pessoas com deficiência visual. O método proposto registra os resultados no formato textual, em substituição à representação gráfica, tornando a saída acessível à todos os usuários.
 
@@ -86,14 +85,14 @@ A simulação do movimento é implementada na dinâmica newtoniana, enquanto a d
 Além disso, o Proto3d é uma ferramenta acessível às pessoas com deficiência visual; desta forma, os resultados das simulações são apresentados no Registro Acessível, um log compatível com os leitores de tela disponíveis no mercado.
 
 \subsection{Simulador Proto3d}
-O Proto3d é um simulador de movimento e colisão de corpos rígidos. Para executar uma simulação, a ferramenta permite dimensionar e personalizar um ambiente (mundo), bem como inserir e personalizar corpos rígidos estáticos ou dinâmicos. Os seguintes parâmetros são configuráveis:
+O Proto3d é um simulador de movimento e colisão de corpos rígidos construído em C++. Para executar uma simulação, a ferramenta permite dimensionar e personalizar um ambiente (mundo), bem como inserir e personalizar corpos rígidos estáticos ou dinâmicos. Os seguintes parâmetros são configuráveis:
 \begin{itemize}
 	\item \textbf{Mundo}: gravidade, limites físicos do ambiente e passo de tempo;
 	\item \textbf{Corpos rígidos estáticos}: forma, posição e orientação;
 	\item \textbf{Corpos rígidos dinâmicos}: forma, massa, posição, velocidade e coeficiente de restituição\footnote{Valor que varia de 0 a 1, especificando o quanto de energia cinética o objeto conserva após uma colisão.};
 \end{itemize}
 %
-Os seguintes padrões foram adotados na implementação do Proto3d: 1) Utiliza o Sistema Cartesiano Tridimensional \cite{thibaut2004proyecto}, onde X, Y e Z representam, respectivamente, largura, profundidade e altura. 2) O ponto de origem do mundo (X=0,Y=0,Z=0) é localizado no canto inferior esquerdo. 3) A localização e o tamanho dos corpos rígidos é definida por posição (coordenada onde está o ponto central do objeto no mundo) e espaço que ocupa (definido pelo \textit{Axis Aligned Bounding Box}, ou AABB). 
+Os seguintes padrões foram adotados na implementação do Proto3d: 1) Utiliza o Sistema Cartesiano Tridimensional \cite{thibaut2004proyecto}, onde X, Y e Z representam, respectivamente, largura, profundidade e altura. 2) O ponto de origem do mundo (X=0,Y=0,Z=0) é localizado no canto inferior esquerdo. 3) A localização e o tamanho dos corpos rígidos é definida por posição (coordenada onde está o ponto central do objeto no mundo) e espaço que ocupa (definido pelo \textit{Axis Aligned Bounding Box}, ou AABB). 4) A entrada de dados ocorre por meio de um objeto JSON previamente configurado em um arquivo de texto. Esse arquivo contém chaves e valores destinados a ajustar as propriedades do ambiente, bem como uma lista de objetos a serem adicionados.
 
 O AABB pode ser compreendido como uma estrutura que encapsula o objeto simulado, sendo especificado por 3 segmentos de reta, um em cada eixo. Cada segmento tem uma posição inicial e uma final.
 
@@ -114,6 +113,8 @@ O Proto3d apresenta os resultados de cada simulação no Registro Acessível, em
 	\item Pos: Posição do objeto em um determinado instante (em metros) nos eixos X (horizontal), Y (profundidade) e Z (vertical);
 	\item Vel: Velocidade do objeto neste instante (m/s).
 \end{itemize}
+
+Para fins de testes, atualmente é viável realizar o rastreamento de apenas um objeto dinâmico. Os objetos estáticos não são objeto de rastreamento, uma vez que permanecem insensíveis às forças externas que atuam sobre eles.
 
 \subsection{Testando uma simulação}
 O funcionamento do Proto3d é demonstrado com a simulação de um objeto dinâmico que, atraído pela gravidade, cai e colide com um objeto estático. Depois desta colisão, sob efeito de uma nova força horizontal, o objeto dinâmico é movido novamente. As etapas da simulação para o teste são detalhadas na sequência. 

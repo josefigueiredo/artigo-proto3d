@@ -1,444 +1,427 @@
-      Proto3d: Um estudo de como tornar uma simulac¸a~o
-                        computacional acess´ivel
+Proto3d: Um simulador computacional acessível com detecção
+                                 de colisão.
 
-                   Ro´ger Matheus Lasch 1, Jose´ Anto^nio de Figueiredo1
+                                                                               1
 
- 1Curso Bacharel em Cie^ncia da Computac¸a~o ­ Instituto Federal Sul-rio-grandense (IFSUL)
-                                        Passo Fundo ­ RS ­ Brasil
+     Abstract. This paper introduces Proto3d, a rigid body simulator and collision
+     detection system that presents its results in an Accessible Registry designed for
+     individuals with visual impairments. The application was validated through the
+     simulation of a sphere dropping from a specific height onto a static box, resul-
+     ting in the sphere bouncing multiple times. The values presented in the Acces-
+     sible Registry can be verified through calculations based on Newtonian physics.
+     The results demonstrate that the prototype has achieved its simulation goal with
+     accuracy and can be applied in various scenarios, including educational tech-
+     nology.
 
-                       rogerlasch@gmail.com, josefigueiredo@ifsul.edu.br
+     Resumo. Este trabalho apresenta o Proto3d, um simulador de corpos rígidos e
+     detecção de colisão, que apresenta os resultados em um Registro Acessível às
+     pessoas com deficiência visual. A aplicação foi validada com a simulação de
+     uma esfera, que cai de uma determinada altura sobre uma caixa estática. A
+     queda faz a esfera quicar algumas vezes. Os valores apresentados no Registro
+     Acessível podem ser validados por cálculos de física newtoniana. Os resultados
+     demonstram que o protótipo atingiu seu objetivo de simulação com acurácia,
+     podendo ser aplicado em diversos cenários, inclusive com tecnologia educaci-
+     onal.
 
-     Abstract.
+1. Introdução
 
-     Resumo. Aqui vai o resumo
+O objetivo do trabalho é desenvolver uma aplicação para simulação de corpos rígidos
+e detecção de colisão. A proposta está situada na área da simulação computacional,
+delimitando-se na detecção e resolução de colisões. O estudo se justifica uma vez que
+a simulação computacional é uma área ainda pouco explorada e, segundo [Ericson 2004],
+a detecção de colisão continua sendo um problema fundamental, de muita relevância para
+a ciência moderna.
 
-1. Introduc¸a~o
+         O artigo apresenta os resultados obtidos com o desenvolvimento do Proto3d, que
+simula movimento e colisão de corpos rígidos. O projeto apresenta a execução das simu-
+lações em uma saída projetada para atender às necessidades de pessoas com deficiência
+visual. O método proposto registra os resultados no formato textual, em substituição à
+representação gráfica, tornando a saída acessível à todos os usuários.
 
-/*Antigo O problema abordado neste trabalho envolve a validac¸a~o de um algoritmo por
-meio de representac¸o~es gra´ficas. O objetivo principal e´ desenvolver um me´todo acess´ivel
-para avaliar a efica´cia desse algoritmo, particularmente no contexto de detecc¸a~o de co-
-liso~es em cena´rios gra´ficos. Embora a visualizac¸a~o da colisa~o entre corpos r´igidos seja
-comumente realizada de maneira visual, este estudo busca criar uma abordagem alterna-
-tiva, especialmente projetada para atender a`s necessidades de pessoas com deficie^ncia vi-
-sual. O me´todo proposto prioriza a rastreabilidade das propriedades cr´iticas do problema
-em detrimento da representac¸a~o visual, o que torna os resultados acess´iveis e compre-
-ens´iveis tanto para o pu´blico-alvo quanto para outros leitores. */
+         O restante do artigo é organizado da seguinte maneira: A seção 2 apresenta um
+breve referencial teórico que fundamenta a construção do simulador proposto; a seção 3
+apresenta o planejamento da aplicação e a modelagem básica das classes; a seção 4 discute
+os resultados obtidos com a aplicação, através da demonstração de uma simulação; A
+seção 5 traz algumas considerações finais e registra possibilidades de trabalhos futuros.
+Por fim, são apresentadas as referências bibliográficas utilizadas.
+2. Simulação Computacional
 
-         O objetivo primordial deste trabalho e´ desenvolver uma aplicac¸a~o dedicada ao es-
-tudo da simulac¸a~o de corpos r´igidos, que servem para modelar o movimento e a iterac¸a~o
-entre diversos objetos. Durante o processo de desenvolvimento dessa aplicac¸a~o, surgiu a
-necessidade de considerar como testar os componentes constru´idos sem depender exclu-
-sivamente de recursos visuais. Embora a visualizac¸a~o da colisa~o entre corpos r´igidos seja
-comumente realizada de maneira visual, este estudo busca criar uma abordagem alterna-
-tiva, especialmente projetada para atender a`s necessidades de pessoas com deficie^ncia vi-
-sual. O me´todo proposto prioriza a rastreabilidade das propriedades cr´iticas do problema
-em detrimento da representac¸a~o visual, o que torna os resultados acess´iveis e compre-
-ens´iveis tanto para o pu´blico-alvo quanto para outros leitores. Neste trabalho sa~o apre-
-sentados os principais resultados da construc¸a~o da aplicac¸a~o Proto3d, um simulador de
-movimento e colisa~o de corpos r´igidos, que mostra os resultados em uma sa´ida acess´ivel
-aos leitores de tela dispon´iveis no mercado. Ale´m disso o Proto3d e´ uma ferramenta con-
-figura´vel, que permite adicionar e personalizar o mundo e os objetos para a simulac¸a~o.
+Segundo [Durán 2018], a simulação computacional é uma técnica amplamente utilizada
+em diversas áreas, como por exemplo no estudo de sistemas complexos, que por diversos
+fatores, não podem ser facilmente reproduzidos.
 
-         O artigo esta´ organizado nas seguintes sec¸o~es: 2. Simulac¸a~o Computacional Nesta
-sec¸a~o, abordaremos conceitos fundamentais relacionados a` simulac¸a~o computacional,
-bem como aspectos pertinentes a`s formas geome´tricas e detecc¸a~o de colisa~o. 3. Materiais
-e Me´todos A sec¸a~o de Materiais e Me´todos oferece uma descric¸a~o detalhada dos princi-
-pais componentes do Proto3d, incluindo corpos r´igidos, ambiente de simulac¸a~o, fase am-
-pla e outros elementos cruciais para a compreensa~o do sistema em estudo. 4. Resultados
-Obtidos Nesta sec¸a~o, apresentaremos os resultados obtidos ate´ o momento com o Proto3d,
-ale´m de fornecer um exemplo pra´tico de um cena´rio de teste, demonstrando como o sis-
-tema se comportou e o que foi observado durante as simulac¸o~es. 5. Considerac¸o~es Finais
-Na sec¸a~o de Considerac¸o~es Finais, concluiremos o artigo, resumindo os principais acha-
-dos e destacando poss´iveis direc¸o~es futuras para a pesquisa.
+         A simulação permite avaliar diversos cenários de uma pesquisa, apenas alterando
+suas variáveis de controle, reduzindo, assim, os custos e os riscos de um experimento fí-
+sico. Conforme [Marschner and Shirley 2018], essa técnica pode ser aplicada em diversas
+áreas como biologia, engenharia, física, química, entre outras.
 
-         o que ter na introduc¸a~o....
-
-2. Simulac¸a~o Computacional
-
-Segundo [Dura´n 2018] a simulac¸a~o computacional e´ uma te´cnica amplamente utilizada
-em diversas a´reas, como por exemplo no estudo de sistemas complexos que por diversos
-fatores, na~o podem ser facilmente reproduzidos.
-
-         A simulac¸a~o permite avaliar diversos cena´rios de uma pesquisa, apenas alterando
-suas varia´veis de controle, reduzindo assim os custos e os riscos de um experimento f´isico.
-Conforme [Marschner and Shirley 2018], essa te´cnica pode ser aplicada em diversas a´reas
-como biologia, engenharia, f´isica, qu´imica, entre outras.
-
-         Para construir uma simulac¸a~o, e´ necessa´rio uma representac¸a~o matema´tica e/ou
+         Para construir uma simulação, é necessário uma representação matemática e/ou
 computacional do comportamento do sistema a ser simulado.
 
-2.1. Formas Geome´tricas e Movimento
+2.1. Formas Geométricas e Movimento
 
-A te´cnica usada para representar uma forma geome´trica computacionalmente dependera´
-do n´ivel de detalhamento desejado [Pharr et al. 2016]. E´ poss´ivel fazer esta representac¸a~o
-de diversas maneiras, por exemplo: forma vetorial, parame´trica ou de forma poligonal.
-Neste trabalho, adota-se a representac¸a~o vetorial, com coordenadas cartesianas tridimen-
+A técnica usada para representar uma forma geométrica computacionalmente dependerá
+do nível de detalhamento desejado [Pharr et al. 2016]. É possível fazer esta representação
+de diversas maneiras, por exemplo: forma vetorial, paramétrica ou de forma poligonal.
+Neste trabalho, adota-se a representação vetorial, com coordenadas cartesianas tridimen-
 sionais.
 
-         Para fins de simplificac¸a~o, este trabalho limita-se a modelar objetos na forma de
-esferas e caixas. Esferas sa~o modeladas com um ponto (centro da esfera) e um raio, en-
-quanto caixas sa~o modeladas com um ponto m´inimo e um ponto ma´ximo, que representam
+         Para fins de simplificação, este trabalho limita-se a modelar objetos na forma de
+esferas e caixas. Esferas são modeladas com um ponto (centro da esfera) e um raio, en-
+quanto caixas são modeladas com um ponto mínimo e um ponto máximo, que representam
 o canto inferior esquerdo, e o canto superior direito da caixa.
 
-         No contexto desta simulac¸a~o, os objetos podem ser categorizados em duas classes
-principais: Objetos esta´ticos e objetos dina^micos. Os objetos esta´ticos na~o se movem
-por conta pro´pria e nem sob influe^ncia de forc¸as externas. Em contrapartida, os objetos
-dina^micos podem se mover por conta pro´pria, bem como em resposta a forc¸as externas.
+         No contexto desta simulação, os objetos podem ser categorizados em duas classes
+principais: Objetos estáticos e objetos dinâmicos. Os objetos estáticos não se movem
+por conta própria e nem sob influência de forças externas. Em contrapartida, os objetos
+dinâmicos podem se mover por conta própria, bem como em resposta a forças externas.
 
-2.2. Colisa~o e Detecc¸a~o de Colisa~o
+2.2. Colisão e Detecção de Colisão
 
-Uma colisa~o ocorre quando dois ou mais objetos entram em contato, compartilhando al-
-gum espac¸o do ambiente simulado [Ericson 2004]. Segundo [Bourg and Bywalec 2013],
-a colisa~o envolve ca´lculos para determinar as conseque^ncias/efeitos desse contato.
+Uma colisão ocorre quando dois ou mais objetos entram em contato, compartilhando al-
+gum espaço do ambiente simulado [Ericson 2004]. Segundo [Bourg and Bywalec 2013],
+a colisão envolve cálculos para determinar as consequências/efeitos desse contato.
 
-         Segundo [Bourg and Bywalec 2013] a detecc¸a~o de colisa~o e´ um problema de geo-
-metria computacional, que procura determinar se e onde, dois ou mais objetos colidiram.
+         Segundo [Bourg and Bywalec 2013], a detecção de colisão é um problema de ge-
+ometria computacional, que procura determinar se e onde dois ou mais objetos colidiram.
 Pode ser detectada de diversas maneiras, dependendo da natureza dos objetos envolvi-
-dos [Foley 1996], por exemplo: 1) se a dista^ncia entre os dois objetos esta´ abaixo de uma
-determinada tolera^ncia; 2) se os objetos estiverem sobrepondo-se em um ou mais pontos.
+dos [Foley 1996], por exemplo: 1) se a distância entre os dois objetos está abaixo de uma
+determinada tolerância; 2) se os objetos estiverem sobrepondo-se em um ou mais pontos.
 
-         O processo para detecc¸a~o de colisa~o e´ dividido em fase de previsa~o e de
-identificac¸a~o. A previsa~o busca objetos que possivelmente estejam colidindo, enquanto a
-identificac¸a~o localiza as coliso~es ocorridas. A separac¸a~o em duas fases distintas garante
-um consumo racional do recurso computacional.
+         O processo para detecção de colisão é dividido em fase de previsão e de identifi-
+cação. A previsão busca objetos que possivelmente estejam colidindo, enquanto a iden-
+tificação localiza as colisões ocorridas. A separação em duas fases distintas garante um
+consumo racional do recurso computacional.
 
-         Apo´s detectar uma colisa~o entre dois objetos, torna-se necessa´rio resolver o
-evento, atualizando a posic¸a~o da simulac¸a~o. Em simulac¸o~es que na~o requerem realismo,
-apenas a correc¸a~o das posic¸o~es dos objetos e´ suficiente. Ja´ em simulac¸o~es mais avanc¸adas,
-outros me´todos podem ser necessa´rios, como a resoluc¸a~o de colisa~o por impulso discutida
-em [Bourg and Bywalec 2013] e [Baraff 1992], onde as caracter´isticas f´isicas dos objetos
-sa~o considerados para que a reac¸a~o seja a mais adequada poss´ivel.
+         Após detectar uma colisão entre dois objetos, torna-se necessário resolver o
+evento, atualizando a posição da simulação. Em simulações que não requerem realismo,
+apenas a correção das posições dos objetos é suficiente. Já em simulações mais avan-
+çadas, outros métodos podem ser necessários, como a resolução de colisão por impulso,
+discutida em [Bourg and Bywalec 2013] e [Baraff 1992], onde as características físicas
+dos objetos são considerados para que a reação seja a mais adequada possível.
 
-3. Materiais e Me´todos
+3. Materiais e Métodos
 
--¿ objetivo do simulador -¿ interface de configurac¸a~o (falar somente do que pode ser
-configurado.) -¿ principais classes (sem detalhar todos os atributos) -¿ recursos utilizados
+O objetivo do projeto é desenvolver e implementar um programa para simulação do mo-
+vimento de corpos rígidos em determinado espaço ou ambiente. A aplicação deverá ter
+uma interface para configuração do ambiente e dos objetos.
 
-         O Proto3d e´ um programa que permite realizar simulac¸o~es de corpo r´igido. Ele
-possui algumas propriedades configura´veis tais como gravidade, e limites do ambiente.
-No ambiente, objetos sa~o adicionados para se realizar a simulac¸a~o. Estes objetos sa~o nor-
-malmente chamados de corpos r´igidos. Os corpos r´igidos, sa~o compostos com diversas
-propriedades como restituic¸a~o, posic¸a~o, velocidade, orientac¸a~o, forma, e outras proprie-
-dades dependendo do n´ivel de detalhamento que se deseja. O simulador, e´ constitu´ido por
-diversos componentes:
+         No ambiente, é preciso configurar gravidade e dimensões. Para os corpos rígidos,
+é preciso configurar restituição, posição, velocidade, orientação, forma e/ou outras pro-
+priedades, dependendo do nível de detalhamento que se deseja. A aplicação deve permitir
+que os objetos sejam adicionados/removidos no ambiente.
 
-      · Classe Mundo: Esta classe representa o ambiente virtual onde a simulac¸a~o ocorre,
-         sendo o nu´cleo central de todo o sistema.
+         A modelagem do simulador é apresentada, de forma simplificada, na listagem de
+classes a seguir:
 
-      · Classe Corpo R´igido: Esta classe e´ responsa´vel por representar objetos no ambi-
-         ente, podendo ser objetos dina^micos ou esta´ticos.
+      · Mundo: Representa o ambiente virtual onde a simulação ocorre, sendo o núcleo
+         central de todo o sistema;
 
-      · Classe Pre´-filtragem: No in´icio de cada quadro, essa classe realiza uma filtragem
-         em uma lista de objetos, preparando-os para a simulac¸a~o de movimento.
+      · Corpo Rígido: Responsável por representar objetos no ambiente, podendo ser
+         objetos dinâmicos ou estáticos;
 
-      · Classe Integrac¸a~o Nume´rica: Aqui, as equac¸o~es de movimento sa~o resolvidas para
-         cada objeto previamente preparado pela classe de pre´-filtragem.
+      · Pré-filtragem: No início de cada quadro, essa classe realiza uma filtragem em uma
+         lista de objetos, preparando-os para a simulação de movimento;
 
-      · Classe Fase Ampla: Nesta classe, ocorre a verificac¸a~o de uma lista de pares de
-         objetos cujas caixas delimitadoras (AABBS) esta~o se sobrepondo, o que pode
-         indicar uma poss´ivel colisa~o entre os objetos.
+      · Integração Numérica: Responsável por resolver equações de movimento para cada
+         objeto previamente preparado pela classe de pré-filtragem;
 
-      · Classe Fase Estreita: Essa classe aplica testes espec´ificos de intersec¸a~o entre geo-
-         metrias para confirmar ou descartar coliso~es entre os objetos previamente identi-
-         ficados pela fase ampla.
+      · Fase Ampla: Responsável pela verificação em uma lista com pares de objetos
+         cujas caixas delimitadoras (AABBS) estão se sobrepondo, o que pode indicar uma
+         possível colisão entre os objetos;
 
-      · Classe Resolvedor de Coliso~es: Aqui, a ac¸a~o e´ tomada para separar objetos que
-         estejam em sobreposic¸a~o, trabalhando com o conjunto de objetos retornados pela
-         fase estreita.
+      · Fase Estreita: Aplica testes específicos de interseção entre geometrias, para con-
+         firmar ou descartar colisões entre os objetos identificados previamente na fase
+         ampla;
 
-      · Classe Despacho de Eventos: Nesta classe, notificac¸o~es sa~o enviadas ao usua´rio
-         para informar sobre os eventos ocorridos no quadro atual da simulac¸a~o.
+      · Resolvedor de Colisões: Responsável por separar objetos que estejam em sobre-
+         posição, trabalhando com o conjunto de objetos retornados pela fase estreita;
+
+      · Despacho de Eventos: Responsável pelo envio de notificações ao usuário, infor-
+         mando sobre os eventos ocorridos no quadro atual da simulação.
 
 4. Resultados Obtidos
 
-O principal resultado e´ a aplicac¸a~o Proto3d, que executa simulac¸o~es de movimento e
-colisa~o de corpos r´igidos em duas ou tre^s dimenso~es, dentro do ambiente configurado
-pelo usua´rio.
+O principal resultado é a aplicação Proto3d, que executa simulações de movimento e
+colisão de corpos rígidos em duas ou três dimensões, dentro do ambiente configurado
+pelo usuário.
 
-         A simulac¸a~o do movimento e´ implementada na dina^mica newtoniana, enquanto a
-detecc¸a~o de colisa~o e´ implementada em uma estrutura de dados Octree, com algoritmos
-Broad Phase Narrow Phase para previsa~o e identificac¸a~o, respectivamente.
-         Ale´m disso, o Proto3d e´ uma ferramenta acess´ivel a`s pessoas com deficie^ncia
-visual, desta forma os resultados das simulac¸o~es sa~o apresentados no Registro de Sa´ida,
-um log acess´ivel aos leitores de tela dispon´iveis no mercado.
+         A simulação do movimento é implementada na dinâmica newtoniana, enquanto a
+detecção de colisão é implementada em uma estrutura de dados Octree, com algoritmos
+Broad Phase Narrow Phase para previsão e identificação, respectivamente.
 
+         Além disso, o Proto3d é uma ferramenta acessível às pessoas com deficiência
+visual; desta forma, os resultados das simulações são apresentados no Registro Acessível,
+um log compatível com os leitores de tela disponíveis no mercado.
 4.1. Simulador Proto3d
 
-O Proto3d e´ um simulador de movimento e colisa~o de corpos r´igidos. Para executar
-uma simulac¸a~o, a ferramenta permite dimensionar e personalizar um ambiente (mundo),
-bem como inserir e personalizar corpos r´igidos esta´ticos ou dina^micos. Os seguintes
-para^metros sa~o configura´veis:
+O Proto3d é um simulador de movimento e colisão de corpos rígidos. Para executar
+uma simulação, a ferramenta permite dimensionar e personalizar um ambiente (mundo),
+bem como inserir e personalizar corpos rígidos estáticos ou dinâmicos. Os seguintes
+parâmetros são configuráveis:
 
-      · Mundo: gravidade, limites f´isicos do ambiente e passo de tempo;
-      · Corpos r´igidos esta´ticos: forma, posic¸a~o e orientac¸a~o;
-      · Corpos r´igidos dina^micos: forma, massa, posic¸a~o, velocidade e coeficiente de
+      · Mundo: gravidade, limites físicos do ambiente e passo de tempo;
+      · Corpos rígidos estáticos: forma, posição e orientação;
+      · Corpos rígidos dinâmicos: forma, massa, posição, velocidade e coeficiente de
 
-         restituic¸a~o1;
+         restituição1;
 
-         +++ avaliar esta explicac¸a~o ++++ A localizac¸a~o e o tamanho corpos r´igidos e´ de-
-finida pela posic¸a~o e espac¸o que ocupa. Posic¸a~o indica a coordenada do ponto central do
-objeto, enquanto que o espac¸o que ocupa sera´ definido pelo intervalo entre duas coorde-
-nadas no referido eixo. +++++ ate´ aqui +++++
+Os seguintes padrões foram adotados na implementação do Proto3d: 1) Utiliza o Sis-
+tema Cartesiano Tridimensional [Thibaut Tadeo et al. 2004], onde X, Y e Z represen-
+tam, respectivamente, largura, profundidade e altura. 2) O ponto de origem do mundo
+(X=0,Y=0,Z=0) é localizado no canto inferior esquerdo. 3) A localização e o tamanho
+dos corpos rígidos é definida por posição (coordenada onde está o ponto central do objeto
+no mundo) e espaço que ocupa (definido pelo Axis Aligned Bounding Box, ou AABB).
 
-         A execuc¸a~o da simulac¸a~o e´ apresentada em formato texto no Registro de Sa´ida,
-sendo que esta versa~o do Proto3d na~o dispo~e de interface gra´fica. Para validac¸a~o das
-simulac¸o~es, foram executados alguns testes com grandezas conhecidas.
+         O AABB pode ser compreendido como uma estrutura que encapsula o objeto
+simulado, sendo especificado por 3 segmentos de reta, um em cada eixo. Cada segmento
+tem uma posição inicial e uma final.
+
+         A execução da simulação é apresentada em formato de texto no Registro Acessí-
+vel, sendo que esta versão do Proto3d não dispõe de interface gráfica. Para validação das
+simulações, foram executados alguns testes com grandezas conhecidas.
 
          Para este estudo, optou-se em restringir o formato dos objetos em esferas e caixas,
-apresentando os resultados da simulac¸a~o para um destes testes.
+apresentando os resultados da simulação para um destes testes.
 
-4.2. Registro de Sa´ida
+4.2. Registro Acessível
 
-O Proto3d apresenta os resultados de cada simulac¸a~o no Registro de Sa´ida, em formato
-de log de texto e tambe´m armazena em um arquivo para ana´lise posterior. O registro e´
-organizado em duas partes principais: Visa~o Geral e Rastreio do Movimento.
+O Proto3d apresenta os resultados de cada simulação no Registro Acessível, em formato
+de log de texto e também armazena em um arquivo para análise posterior. O registro é
+organizado em duas partes principais: Visão Geral e Rastreio do Movimento.
 
-         Visa~o Geral: Apresenta as configurac¸o~es gerais do ambiente simulado, como:
-gravidade, especificac¸a~o dos limites do mundo e a lista de objetos simulados. Por
-convenc¸a~o, as grandezas na simulac¸a~o podem ser lidas como: dimensa~o em metros (m),
-massa em quilogramas (kg), tempo em segundos (s), velocidade em metros/segundo (m/s)
-e forc¸a de movimento em metros/segundo2 (m/s2).
+         Visão Geral: Apresenta as configurações gerais do ambiente simulado, como gra-
+vidade, especificação dos limites do mundo e a lista de objetos simulados. Por convenção,
+as grandezas na simulação são lidas como: dimensão em metros (m), massa em quilo-
+gramas (kg), tempo em segundos (s), velocidade em metros/segundo (m/s) e força de
+movimento em metros/segundo2 (m/s2).
 
-         Rastreio do Movimento: Apresenta informac¸o~es das iterac¸o~es do simulador a
-cada passo de tempo. Os registros possuem informac¸o~es conforme a legenda:
+         Rastreio do Movimento: Apresenta informações das iterações do simulador a cada
+passo de tempo. Os registros possuem informações conforme a legenda:
 
-      · T: Tempo decorrido desde o in´icio da simulac¸a~o ate´ este registro;
-      · Dir: Trajeto´ria do objeto dina^mico conforme a legenda: s (direc¸a~o sul), n (direc¸a~o
+      · T: Tempo decorrido desde o início da simulação até este registro;
+      · Dir: Trajetória do objeto dinâmico conforme a legenda: s (direção sul), n (direção
 
-         norte), o (direc¸a~o oeste), l (direc¸a~o leste), c (direc¸a~o acima/para cima), b (direc¸a~o
-         abaixo/para baixo); E´ poss´ivel ocorrer combinac¸o~es entre as trajeto´rias ba´sicas.
-      · Pos: Posic¸a~o do objeto neste instante (em metros) nos eixos X (horizontal), Y
-         (profundidade) e Z (vertical);
+         norte), o (direção oeste), l (direção leste), c (direção acima/para cima), b (direção
+         abaixo/para baixo). É possível ocorrer combinações entre as trajetórias básicas.
+      · Pos: Posição do objeto em um determinado instante (em metros) nos eixos X
+         (horizontal), Y (profundidade) e Z (vertical);
       · Vel: Velocidade do objeto neste instante (m/s).
 
-    1O coeficiente de restituic¸a~o e´ um valor que varia de de 0 a 1 e especifica o quanto de energia cine´tica e´
-conservada no objeto apo´s uma colisa~o
-  4.3. Testando uma simulac¸a~o
+    1Valor que varia de 0 a 1, especificando o quanto de energia cinética o objeto conserva após uma colisão.
+  4.3. Testando uma simulação
 
-  O funcionamento do Proto3d e´ demonstrado com a simulac¸a~o de um objeto dina^mico
-  que, atra´ido pela gravidade, cai e colide com um objeto esta´tico. Depois da colisa~o com
-  a caixa, sob efeito de uma nova forc¸a horizontal, o objeto dina^mico e´ movido novamente.
-  As etapas da simulac¸a~o deste teste esta~o detalhadas a seguir.
+  O funcionamento do Proto3d é demonstrado com a simulação de um objeto dinâmico
+  que, atraído pela gravidade, cai e colide com um objeto estático. Depois desta colisão,
+  sob efeito de uma nova força horizontal, o objeto dinâmico é movido novamente. As
+  etapas da simulação para o teste são detalhadas na sequência.
 
-           O Quadro 1 mostra o Registro de Sa´ida de inicializac¸a~o do ambiente, para o teste
-  proposto. Para fins de adequac¸a~o ao formato de artigo, algumas linhas do Registro de
-  Sa´ida original podera~o ser omitidas nos quadros apresentados.
+           O Quadro 1 mostra o Registro Acessível2 de inicialização do ambiente, para o
+  teste proposto.
 
-           O registro inicia mostrando Tempo atual=0.00s e U´ ltimo passo de tempo=0.00s,
-  indicando que a simulac¸a~o ainda na~o comec¸ou. A seguir mostra o para^metro Gravi-
-  dade=True e Gravidade: 0.00:0.00:-9.81, indicando que a gravidade esta´ ativada, com
-  forc¸a 9, 81m/s2 no eixo Z, na~o existindo forc¸as nos eixos X e Y. O valor e´ negativo para
-  que a forc¸a "atraia"os objetos para baixo.
+           O registro inicia mostrando Tempo atual=0, 00s e Último passo de tempo=0, 00s,
+  indicando que a simulação ainda não começou. Na linha 2 são mostrados os parâmetros
+  Gravidade=True e Gravidade: 0, 00 : 0, 00 : -9, 81, indicando que a gravidade está ati-
+  vada, com força 9, 81m/s2 apenas no eixo Z (o valor é negativo para que a força "atraia"os
+  objetos para baixo). Por fim, na linha 3 são mostrados os limites do ambiente, sendo os 3
+  eixos iniciados em 0 (origem) vão até 1000000m.
 
-           /* revisar aqui: inicio VERIFICAR SISTEMA DE COORDENADAS */
+           O chão do mundo (piso) é definido a seguir. A linha 5 informa que este ele-
+  mento é um objeto em forma de caixa e seu ponto central encontra-se na posição
+  X = 500000, Y = 500000, Z = -0, 5. Pode-se observar que o ponto em Z está ne-
+  gativo, ou seja, está um pouco abaixo da origem.
 
-           Na terceira linha sa~o mostrados os limites do ambiente, tendo um valor inicial e
-  um final para cada eixo. As dimenso~es do espac¸o de simulac¸a~o sa~o 1000000m nos eixos
-  X(largura) e Y (profundidade). O eixo Z (altura) 100000m.
+           A linha 6 mostra o espaço ocupado pelo chão com X = 0, 00 : 1000000 e Y =
+  0, 00 : 1000000, indicando que esta forma geométrica ocupa toda a largura e comprimento
+  do mundo. Já a altura do chão é definida por Z = -1, 00 : 0, 00, indicando que a altura
+  do mesmo é de 1m, mas ocupa o espaço abaixo do mundo.
 
-           Nas linhas 5 e 6 esta~o especificados o cha~o (piso) do ambiente de simulac¸a~o,
-  representado por uma caixa. O cha~o do mundo encontra-se na posic¸a~o
+                           Quadro 1. Registro Acessível: Inicialização do ambiente
 
-           Importante destacar que este cha~o na~o representa o limite inferior do mundo, ou
-  seja, nesta simulac¸a~o ha´ espac¸o vazio depois do cha~o.
-
-           O cha~o encontra-se
-
-           /* revisar aqui: fim */
-
-                            Quadro 1. Registro de Sa´ida: Inicializac¸ a~ o do ambiente
-1 Tempo atual: 0.00s; U´ltimo passo de tempo: 0.00;
+1 Tempo atual: 0.00s; Último passo de tempo: 0.00;
 2 Gravidade: True; Gravidade: 0.00:0.00:-9.81
-3 Limites: 0.00:1000000.00,0.00:1000000.00,-10000.00:1000000.00
+3 Limites: 0.00:1000000.00,0.00:1000000.00,00:1000000.00
 
  4
 
-5 Nome: Ch~ao; Pos: 500000.00:500000.00:-5000.00; Forma Geom: Caixa
-6 AABB -> X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -10000.00:0.00
+5 Nome: Chão; Forma Geom: Caixa; Pos: 500000.00:500000.00:-0.50
+6 AABB -> X: 0.00:1000000.00; Y: 0.00:1000000.00; Z: -1.00:0.00
 
  7
 
-8 Nome: Caixa esta´tica; Pos: 35.00:35.00:5.00; Forma Geom: Caixa
+8 Nome: Caixa estática; Forma Geom: Caixa; Pos: 35.00:35.00:5.00
 9 AABB -> X: 10.00:60.00; Y: 10.00:60.00; Z: 0.00:10.00;
 
 10
 
-11 Nome: Esfera dina~mica; Forma Geo: esfera;
-12 Centro: 10.00:10.00:50.00; Raio: 2.50
-13 Masss: 5.00; Restituic¸~ao: 0.25
-14 AABB -> X: 7.50:12.50; Y: 7.50:12.50; Z: 47.50:52.50
+11 Nome: Esfera dinâmica; Forma Geo: esfera; Pos: 10.00:10.00:50.00
+12 Raio: 2.50; Masss: 5.00; Restituição: 0.25
+13 AABB -> X: 7.50:12.50; Y: 7.50:12.50; Z: 47.50:52.50
 
-           A seguir esta~o as especificac¸o~es do objeto esta´tico denominado caixa. Na linha 8
-  esta´ a localizac¸a~o do ponto central da caixa, na coordenada X=35,Y=35,Z=5. A linha 9
-  mostra os valores do AABB, que marcam os limites da caixa. X=10:60 indica in´icio no
-  ponto 10 e fim no ponto 60; Y=10:60 indica in´icio no ponto 10 e fim no ponto 60; Z=0:10
-  que indica in´icio no ponto 0 e fim no ponto 10;
-           nos 3 eixos, sendo que cada eixo e´ representado por um par de valores, com a
-  posic¸a~o inicial e a posic¸a~o final (cantos da caixa). As medidas apresentadas informam o
-  intervalo 10:60 no eixo X.
+           Nas linhas 8 e 9 encontram-se as especificações de um objeto, denominado caixa
+  estática, de forma cúbica, com lado de 10m, que está repousada sobre o chão.
 
-           que no eixo XEm X esta´ no intervalo 10:60, ou seja e´ esta´ limitado entre os pontos
-  10m e 60m, conferindo uma largura de 50m. Em Y esta´ no intervalo 10:60, conferindo
-  uma largura de 50m. Ja´ em Z esta´ no intervalo 0:10, conferindo uma altura de 10m.
+           A linha 8 informa que a posição do ponto central deste objeto está na coordenada
+  X = 35, Y = 35, Z = 5. Na linha 9, estão os valores do AABB, que demarcam os
+  limites da caixa, com as seguintes dimensões: X = 10, 00 : 60, 00 (segmento de 10 a
+  60), indicando largura de 50m; Z = 10, 00 : 60, 00 (segmento de 10 a 60), indicando
+  profundidade de 50m; Y = 0, 00 : 10, 00 (segmento de 10 a 60), indicando altura de
+  10m.
 
-           Na linha 8 esta~o as especificac¸o~es do objeto esta´tico, denominado caixa. Os valo-
-  res indicam que ponto central da caixa esta´ a 35m da origem no eixo X, 35m da origem
-  no eixo Y e tem altura 5m, a partir da origem no eixo Z. Na linha 9 esta´ especificado
-  o AABB do objeto, indicando os limites do mesmo nos 3 eixos. Em X esta´ no intervalo
-  10:60, ou seja e´ esta´ limitado entre os pontos 10m e 60m, conferindo uma largura de 50m.
-  Em Y esta´ no intervalo 10:60, conferindo uma largura de 50m. Ja´ em Z esta´ no intervalo
-  0:10, conferindo uma altura de 10m.
+       2Para fins de adequação ao formato de artigo, algumas linhas do Registro Acessível original são omitidas
+   nos quadros apresentados
+           Nas linhas 11 à 14 estão as especificações de um objeto dinâmico, denominado
+  esfera dinâmica, de forma esférica, situado a 50m de altura a partir do chão.
 
-           Nas linhas 11 a 14 esta~o as especificac¸o~es do objeto dina^mico, denominado esfera.
-  Os valores indicam que o centro da esfera esta´ a 10m da origem no eixo X, 10m da origem
-  no eixo Y e 50m da origem no eixo Z. O objeto possui raio=2.5m, massa=5kg e coeficiente
-  de restituic¸a~o = 0.25
+           A linha 11 informa que o ponto central da esfera está na posição 10, 00 : 10, 00 :
+  50, 00, indicando que o ponto central da esfera está em 10m da origem nos eixos X e Y e
+  50m da origem no eixo Z. A linha 10 informa que a esfera possui raio=2, 5m, massa=5kg
+  e coeficiente de restituição=0, 25. Na linha 13 estão os valores do AABB, indicando
+  os limites deste objeto, com as seguintes dimensões: X = 7.50 : 12.50; Y = 7.50 :
+  12.50; Z = 47.50 : 52.50, indicando que o diâmetro da esfera é de 5m em todos os eixos.
 
-           Os atributos da esfera, colocam ela verticalmente alinhada com a caixa, em uma
-  posic¸a~o bem alta. A simulac¸a~o consiste em deixar a esfera cair, atra´ida pela forc¸a da
-  gravidade. A queda simulada e´ de 45m. ¡revisar esta informac¸a~o¿
+  4.3.1. Simulação de queda da esfera
 
-           explicar o AABB
+  A simulação consiste em deixar a esfera cair, atraída pela força da gravidade, até colidir
+  com o objeto caixa estática. Entre a borda da esfera e a borda da caixa, a queda simulada
+  é de 37, 5m, e, segundo a física clássica, com uma força G=9, 81m/s2 levaria cerca de
+  2, 76s para ocorrer a colisão. No momento em que os objetos colidem, a velocidade
+  estimada da esfera é de 27, 12m/s.
 
-  4.3.1. Simulac¸a~o de queda da esfera
+           Com a execução da simulação planejada no Quadro 1, a esfera é atraída para baixo
+  pela gravidade, até que eventualmente colida com a caixa que está sobre o chão. Quando
+  a colisão ocorre, a esfera recebe um impulso com sentido contrário à queda, que faz o
+  objeto quicar algumas vezes.
 
-  Com a execuc¸a~o da simulac¸a~o descrita, a esfera e´ atra´ida em direc¸a~o ao cha~o, devido a`
-  forc¸a da gravidade presente no ambiente, ate´ que eventualmente colida com a caixa que
-  esta´ sobre o cha~o. Quando a colisa~o ocorre, a esfera recebe um impulso com sentido
-  contra´rio a` queda, que faz o objeto quicar algumas vezes.
+           Este trecho da simulação pode ser verificado no Quadro 2, onde as coordenadas
+  apresentadas representam o centro da esfera. Destaca-se que apenas alguns instantes da
+  simulação são mostrados no quadro. O detalhamento dos eventos apresentados no Regis-
+  tro Acessível encontra-se a seguir:
 
-           Este trecho da simulac¸a~o pode ser verificado pela sa´ida acess´ivel, no Registro de
-  Sa´ida 2, que mostra apenas alguns pontos da simulac¸a~o. O detalhamento dos eventos
-  registrados encontra-se a seguir:
-
-                                              Quadro 2. Queda da esfera.
+                                Quadro 2. Registro Acessível: Queda da esfera.
 
 1 T: 0.20s, Dir: b, Pos: 10.00:10.00:49.61, Vel: 1.96m/s
-2 T: 2.60s, Dir: b, Pos: 10.00:10.00:14.29, Vel: 25.51m/s
-3 T: 2.80s, Dir: c, Pos: 10.00:10.00:12.50, Vel: 6.87m/s
-4 T: 3.00s, Dir: c, Pos: 10.00:10.00:13.87, Vel: 6.87m/s
+2 T: 2.40s, Dir: b, Pos: 10.00:10.00:19.39, Vel: 23.54m/s
+3 T: 2.60s, Dir: b, Pos: 10.00:10.00:14.29, Vel: 25.51m/s
+4 T: 2.80s, Dir: c, Pos: 10.00:10.00:12.50, Vel: 6.87m/s
+5 T: 3.60S, Dir: c, Pos: 10.00:10.00:15.64, Vel: 0.98m/s
+6 T: 3.80S, Dir: b, Pos: 10.00:10.00:15.25, Vel: 1.96m/s
+7 T: 4.20S, Dir: b, Pos: 10.00:10.00:13.28, Vel: 5.89m/s
+8 T: 4.40S, Dir: c, Pos: 10.00:10.00:12.50, Vel: 1.96m/s
 
-           ¡revisar esta lista¿
-        · Linha 1: Iterac¸a~o em 0.2s. A gravidade comec¸a atrair a esfera para baixo;
-        · Linha 2: Iterac¸a~o em 2.60s. A esfera desceu 35,32m em relac¸a~o a posic¸a~o da
+        · T = 0, 20s: Gravidade começa atrair a esfera para baixo;
+        · T = 2, 40 a 2, 60: Gravidade continua atraindo a esfera, aumentando sua veloci-
 
-           primeira iterac¸a~o, estando agora com velocidade de 25.51m/s;
-        · Linha 3: Iterac¸a~o em 2.80s. A esfera colidiu com a caixa, recebendo impulso
+           dade;
+        · T = 2, 60s: Esfera caiu 35, 32m em relação a posição inicial e agora tem veloci-
 
-           de forc¸a contra´ria a` queda, mudando de direc¸a~o. Agora esta´ subindo (na posic¸a~o
-           12.50m) a uma velocidade de 6.87m/s;
-        · Linha 4: Iterac¸a~o no tempo 3.00s. A esfera ainda esta´ subindo (agora na posic¸a~o
-           13.87m) em func¸a~o da colisa~o com a caixa. Este movimento permanece ate´ que a
-           gravidade consiga anular o impulso restitu´ido, ou que outra forc¸a seja aplicada no
-           objeto.
+           dade de 25, 51m/s. A colisão acontece em T = 2, 76s (sem registro no log);
+        · T = 2, 80s: Esfera já colidiu com a caixa, recebendo um impulso de força con-
 
-           No instante 4.40s a esfera esta´ parando de quicar, quando uma forc¸a lateral de
-  35m/s2 e´ aplicada, causando um deslocamento lateral para a direita (leste), ate´ chegar ao
-  limite caixa. Este momento da simulac¸a~o pode ser verificado no Registro de Sa´ida 3. O
-  detalhamento dos eventos registrados encontra-se a seguir:
+           trária à queda, fazendo-a mudar de direção. Agora a esfera está subindo (na altura
+           12, 50m) a uma velocidade de 6, 87m/s;
+        · T = 3, 60s: Esfera atinge o pico do primeiro salto com sua velocidade pratica-
+           mente anulada pela gravidade;
+        · T = 3, 80s: Esfera começa a cair novamente após a gravidade conseguir anular a
+           velocidade;
+        · T = 4, 20s: Esfera está prestes a colidir com a caixa pela segunda vez;
+        · T = 4, 40s: Esfera colide com a caixa e salta novamente, mas agora seu pico será
 
-                                           Quadro 3. Esfera sobre a caixa.
+           em uma altura menor que a anterior;
+
+           No instante 4, 40s a esfera está parando de quicar, quando uma força lateral de
+  35m/s2 é aplicada, causando um deslocamento para leste (direita da origem). A esfera
+  será empurrada até chegar ao limite da caixa. Este trecho da simulação pode ser verificado
+  no Quadro 3.
+
+                             Quadro 3. Registro Acessível: Esfera sobre a caixa.
 
 1 T: 4.40s, Dir: c, Pos: 10.00:10.00:12.50, Vel: 1.96m/s
 2 T: 4.60s, Dir: lc, Pos: 11.40:10.00:12.89, Vel: 7.27m/s
 3 T: 4.80s, Dir: l, Pos: 14.20:10.00:12.89, Vel: 14.00m/s
 4 T: 5.60s, Dir: l, Pos: 39.40:10.00:12.50, Vel: 42.00m/s
 
-        · Linha 1: Iterac¸a~o em 4.40s. Instante que a forc¸a lateral e´ aplicada;
-        · Linha 2: Iterac¸a~o em 4.60s. Esfera comec¸a a mover-se tambe´m para leste. A es-
+        · T = 4, 40s: Instante que a força lateral é aplicada;
+        · T = 4, 60s: Esfera começa a mover-se também para leste. A esfera ainda está
 
-           fera ainda esta´ "quicando", mas em uma dista^ncia muito pequena da caixa (apenas
-           39cm). As duas forc¸as causam um movimento na direc¸a~o lc, para leste e acima,
-           descrevendo uma pequena para´bola;
-        · Linha 3: Iterac¸a~o em 4.80s. Esfera estabilizou verticalmente sobre a caixa. Agora
-           com movimento para leste, com velocidade 14m/s, devido a forc¸a aplicada desde
-           o instante 4.40s;
-        · Linha 4: Iterac¸a~o em 5.60s. A esfera continua acelerando na direc¸a~o leste em cima
-           do cubo, agora na posic¸a~o 39.40m com 42m/s.
+           "quicando", mas em uma distância muito pequena da caixa (apenas 39cm). As
+           duas forças causam um movimento na direção lc, para leste e acima, descrevendo
+           uma pequena parábola;
+        · T = 4, 80s: Esfera estabilizou verticalmente sobre a caixa e se movimenta apenas
+           para leste, com velocidade 14m/s, devido a força aplicada desde o instante 4, 40s;
+        · T = 5, 60s: A esfera continua acelerando na direção leste em cima do cubo, agora
+           na posição 39, 40m com 42m/s.
 
-           A esfera continua sendo "empurrada"para leste, ate´ o momento em que "sai de
-  cima da caixa", iniciando um movimento diagonal, para leste e abaixo. A forc¸a lateral
-  ainda esta´ agindo sobre o objeto. Este trecho da simulac¸a~o pode ser verificado no Registro
-  de Sa´ida 4, que mostra apenas alguns instantes da simulac¸a~o. O detalhamento e´ feito a
-  seguir:
+           A esfera continua sendo "empurrada"para leste, até o momento em que "sai de
+  cima da caixa", iniciando um movimento diagonal, para leste e abaixo. A força lateral
+  ainda está agindo sobre o objeto. Este trecho da simulação pode ser verificado no Qua-
+  dro 4.
 
-                                  Quadro 4. Esfera se movendo diagonalmente
+                    Quadro 4. Registro Acessível: Esfera se movendo diagonalmente
 
 1 T: 6.00s, Dir: l Pos: 60.40:10.00:12.50, Vel: 56.00m/s
-2 T: 6.20S, Dir: lb Pos: 73.00:10.00:12.11, Vel: 63.03m/s
-3 T: 7.40S, Dir: c Pos: 178.00:10.00:2.50, Vel: 105.06m/s
-4 T: 8.00S, Dir: lb Pos: 249.40:10.00:3.38, Vel: 126.00m/s
-5 T: 8.60S, Dir: l, Pos: 333.40:10.00:2.50, Vel: 147.00M/s
+2 T: 6.20s, Dir: lb Pos: 73.00:10.00:12.11, Vel: 63.03m/s
+3 T: 7.40s, Dir: c Pos: 178.00:10.00:2.50, Vel: 105.06m/s
+4 T: 8.00s, Dir: lb Pos: 249.40:10.00:3.38, Vel: 126.00m/s
+5 T: 8.60s, Dir: l, Pos: 333.40:10.00:2.50, Vel: 147.00m/s
+6 T:243.20s, Dir: l, Pos:998791.00:10.00:2.50, Vel: 8358.00m/s
+7 T:244.20s, Dir: lb, Pos:1007170.00:10.00:-1.42, Vel: 8393.00m/s
 
-        · Linha 1: Iterac¸a~o me 6.00s. Esfera continua sua trajeto´ria na direc¸a~o leste, no
-           entanto, seu centro ultrapassou a borda da caixa;
+        · T = 6, 00s: Esfera continua sua trajetória na direção leste e agora seu centro
+           ultrapassou a borda da caixa;
 
-        · Linha 2: Iterac¸a~o em 6.20s. Esfera comec¸a a ser puxada pela gravidade no-
-           vamente. Agora, duas forc¸as esta~o agindo neste objeto, fazendo com que des-
-           creva um movimento diagonal, na direc¸a~o lb (leste e abaixo), com velocidade de
-           63.03m/s.
+        · T = 6, 20s: Gravidade começa a agir novamente juntamente com a força late-
+           ral. Esfera descreve um movimento diagonal, na direção lb (leste e abaixo), com
+           velocidade de 63, 03m/s;
 
-        · Linha 3: Iterac¸a~o em 7.40s. Esfera atingiu o cha~o pela primeira vez e continua a
-           ser empurrada para leste.
-        · Linha 4: Iterac¸a~o em 8.00s. Esfera esta´ descrevendo um movimento de para´bola
-           e atinge sua altura ma´xima apo´s quicar no cha~o. A direc¸a~o esta´ leste e baixo, com
-           velocidade de 126m/s;
+        · T = 7, 40s: Esfera atingiu o chão pela primeira vez quicando e subindo;
+        · T = 8, 00s: Depois de atingir sua altura máxima, em função de ter quicado, a
 
-        · Linha 5: Iterac¸a~o em 8.60s. Esfera para de quicar, movimentando-se para leste,
-           com velocidade crescente, ate´ a borda do mundo.
+           esfera volta a cair descrevendo um movimento de parábola. A direção agora é
+           leste e baixo, com velocidade de 126m/s;
+        · T = 8, 60s: Força restituída da queda termina e a esfera para de quicar,
+           movimentando-se para leste, com velocidade crescente até a "borda do mundo".
+      · T = 243, 20s: Esfera está com velocidade de 8358m/s na direção leste, próxima
+         ao limite do mundo simulado;
 
-                              Quadro 5. Esfera sobre o cha~ o e sa´ida do ambiente
-1 T: 8.60S, Dir: l, Pos: 333.40:10.00:2.50, Vel: 147.00M/s
-2 T: 243.20S, Dir: l, Pos: 998791.00:10.00:2.50, Vel: 8358.00M/s
-3 T: 244.20S, Dir: lb, Pos: 1007170.00:10.00:-1.42, Vel: 8393.00M/s
-4 T: 500.01S, Dir: lb, Pos: 4300083.50:10.00:-323212.34, Vel: 17527.70M
+      · T = 244, 20s: Esfera ultrapassa os limites do mundo onde começa a cair nova-
+         mente, descrevendo uma trajetória diagonal.;
 
-        /s
+         Fora do mundo simulado não existem mais objetos que possam causar colisão,
+então a esfera continuará caindo, no sentido leste, abaixo (lb) até que a simulação finalize
+ou novas forças sejam aplicadas a esfera.
 
-           Linha 1: Iterac¸a~o no tempo 8.60s. A esfera se estabiliza no solo e apenas acelera
-  na direc¸a~o leste ate´ o final do ambiente. Linha 2: Iterac¸a~o no tempo 243.20s. A esfera
-  esta´ em alta velocidade na direc¸a~o leste e esta´ pro´xima ao limite leste do ambiente. Linha
-  3: Iterac¸a~o no tempo 244.20s. A esfera ultrapassa os limites do ambiente e volta a ser
-  puxada para baixo pela forc¸a da gravidade e continua em uma trajeto´ria diagonal ate´ o
-  fim da simulac¸a~o. Linha 4: Iterac¸a~o no tempo 500.01s. U´ ltima iterac¸a~o da simulac¸a~o, e
-  a esfera se encontra em auta velocidade extremamente longe dos limites do ambiente de
-  simulac¸a~o.
+5. Considerações finais
 
- 5. Considerac¸o~es finais
+O Proto3d é uma aplicação desenvolvida com a finalidade de simular o movimento de um
+ou mais corpos sólidos, detectar e resolver as colisões entre estes corpos e, ainda, apre-
+sentar a simulação em uma saída acessível a pessoas com deficiência visual. O protótipo
+implementado permite configurar vários parâmetros da simulação.
 
-  O Proto3d e´ uma aplicac¸a~o desenvolvida com a finalidade de simular o movimento de
-  um ou mais corpos so´lidos, detectar e resolver as coliso~es entre estes corpos e ainda,
-  apresentar a simulac¸a~o em uma sa´ida acess´ivel a pessoas com deficie^ncia visual.
+         A simulação executada pelo Proto3d atingiu os objetivos estabelecidos. Os resul-
+tados de movimento mostrados no Registro Acessível podem ser validados com cálculos
+de física newtoniana. As colisões são detectadas e o movimento resultante também têm
+resultados coerentes com os esperados.
 
-           No simulador, tanto o ambiente como os corpos so´lidos, possuem para^metros con-
-  figura´veis de forma independente. Os para^metros do ambiente sa~o: gravidade e limites.
-  E os para^metros dos corpos r´igidos sa~o: massa, velocidade, orientac¸a~o, coeficiente de
-  restituic¸a~o, forma, forc¸as, e outras propriedades Destaca-se que neste relato, para fins de
-  simplificac¸a~o, optou-se em restringir a forma dos objetos em esferas e caixas.
+         O Proto3d poderia ser utilizado em diversas aplicações, com destaque para tec-
+nologia educacional acessível, dedicada ao estudo de física, simulação computacional,
+representação gráfica de movimentos, entre outras.
 
-           A simulac¸a~o executada pelo Proto3d atingiu os objetivos estabelecidos. Os resul-
-  tados de movimento mostrados no registro de sa´ida podem ser validados com ca´lculos
-  de f´isica newtoniana. As coliso~es sa~o detectadas e o movimento resultante tambe´m te^m
-  resultados coerentes com os esperados.
+         Como trabalhos futuros para o desenvolvimento do Proto3d, planeja-se implemen-
+tar o rastreamento de múltiplos objetos, criar uma interface gráfica para tornar o simulador
+mais acessível, aprimorar o método de integração usado para calcular os movimentos dos
+objetos e também considerar outras propriedades físicas, como velocidade angular. Além
+disso, pretende-se introduzir no ambiente simulado um parâmetro para resistência do ar
+ou atrito.
 
-           Como trabalhos futuros no desenvolvimento do Proto3d, planeja-se implementar
-  o rastreamento de mu´ltiplos objetos, criar uma interface gra´fica para tornar o simulador
-  mais acess´ivel, aprimorar o me´todo de integrac¸a~o usado para calcular os movimentos
-  dos objetos, e considerar outras propriedades f´isicas, como velocidade angular. Ale´m
-  disso, espera-se adicionar a opc¸a~o configura´vel de introduzir arrasto do ar no ambiente de
-  simulac¸a~o.
+Referências
 
- Refere^ncias
-
-  Baraff, D. (1992). Dynamic simulation of nonpenetrating rigid bodies. Cornell University.
-Boulic, R. and Renault, O. (1991). 3d hierarchies for animation. In Magnenat-Thalmann,
-   N. and Thalmann, D., editors, New Trends in Animation and Visualization. John Wiley
-   Sons ltd.
+Baraff, D. (1992). Dynamic simulation of nonpenetrating rigid bodies. Cornell University.
 
 Bourg, D. M. and Bywalec, B. (2013). Physics for Game Developers: Science, math, and
    code for realistic effects. "O'Reilly Media, Inc.".
 
-Dura´n, J. M. (2018). Computer simulations in science and engineering: Concepts-
+Durán, J. M. (2018). Computer simulations in science and engineering: Concepts-
    Practices-Perspectives. Springer.
 
 Ericson, C. (2004). Real-time collision detection. Crc Press.
@@ -446,12 +429,10 @@ Ericson, C. (2004). Real-time collision detection. Crc Press.
 Foley, J. D. (1996). Computer graphics: principles and practice, volume 12110. Addison-
    Wesley Professional.
 
-Knuth, D. E. (1984). The Book. Addison-Wesley, 15th edition.
-
 Marschner, S. and Shirley, P. (2018). Fundamentals of computer graphics. CRC Press.
 
 Pharr, M., Jakob, W., and Humphreys, G. (2016). Physically based rendering: From
    theory to implementation. Morgan Kaufmann.
 
-Smith, A. and Jones, B. (1999). On the complexity of computing. In Smith-Jones, A. B.,
-   editor, Advances in Computer Science, pages 555­566. Publishing Press.
+Thibaut Tadeo, E. et al. (2004). Proyecto cube: una introducción a la geometría tridimen-
+   sional. Suma.
